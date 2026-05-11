@@ -131,25 +131,25 @@ Also produces:
 
 ## Evaluator
 
-É o grande diferencial.
+This is the key differentiator.
 
-Ele:
+It:
 
-* executa a aplicação,
-* usa navegador real (Playwright),
-* interage com a UI,
-* testa comportamento,
-* avalia design,
-* verifica bugs.
+* runs the application,
+* uses a real browser (Playwright),
+* interacts with the UI,
+* tests behavior,
+* evaluates design,
+* checks for bugs.
 
-Critérios usados:
+Criteria used:
 
-* qualidade visual,
-* originalidade,
-* funcionalidade,
-* acabamento (“craft”).
+* visual quality,
+* originality,
+* functionality,
+* craft.
 
-Ele produz feedback detalhado para o Generator iterar novamente.
+It produces detailed feedback for the Generator to iterate on.
 
 ([Anthropic][1])
 
@@ -246,27 +246,27 @@ Anthropic also notes that as models improve:
 
 ---
 
-# O que isso significa na prática
+# What this means in practice
 
-O paper praticamente valida várias tendências atuais:
+The paper essentially validates several current trends:
 
 * Claude Code
 * OpenCode
 * Cursor
-* agentes com planner/executor
-* memória persistente no projeto
+* planner/executor agents
+* persistent project memory
 * `AGENTS.md`
 * handoff files
-* loops de avaliação
-* execução multiagente
-* Playwright como avaliador automático
-* agentes long-running
+* evaluation loops
+* multi-agent execution
+* Playwright as an automated evaluator
+* long-running agents
 
-E reforça uma ideia importante:
+And reinforces an important idea:
 
-> “Agentes longos” não são apenas prompts grandes.
+> "Long-running agents" are not just large prompts.
 >
-> São sistemas operacionais cognitivos ao redor do modelo.
+> They are cognitive operating systems built around the model.
 
 [1]: https://www.anthropic.com/engineering/harness-design-long-running-apps "Harness design for long-running application development"
 [2]: https://www.working-ref.com/en/reference/anthropic-harness-design-philosophy-evolution "Anthropic's Harness Design Philosophy — From Multi-Agent ..."
