@@ -1,6 +1,6 @@
 # Coding Harness — Setup Guide
 
-This guide describes how to assemble a development harness for AI coding workflows, composed of plugins, tools, and skills covering spec-driven development, frontend design, code review, security, and persistent memory.
+This guide describes how to assemble a development harness for AI coding workflows, composed of plugins, tools, and skills covering spec-driven development, frontend design, code review, security, browser automation, and persistent memory.
 
 The harness is **agent-agnostic**: the core (`CONSTITUTION.md`) works with any assistant, CLI, editor integration, or coding environment.
 
@@ -113,7 +113,33 @@ Describe the interface you want to build using prompts such as:
 
 ---
 
-### 2.3 Code Review — Automated Pull Request Review
+### 2.3 Agent Browser — Browser Automation for AI Agents
+
+**Repository:** https://github.com/vercel-labs/agent-browser/tree/main
+
+A browser automation plugin that enables AI agents to navigate pages, interact with web interfaces, and perform browser-based workflows for testing, research, and task execution.
+
+#### Installation
+
+Follow the installation and setup instructions in the repository:
+
+```
+https://github.com/vercel-labs/agent-browser/tree/main
+```
+
+#### Usage
+
+Use it when your workflow requires actions such as:
+
+```
+"Open the app in a browser and validate the main flow"
+"Navigate through a signup form and inspect UI behavior"
+"Use browser automation to verify a dashboard interaction"
+```
+
+---
+
+### 2.4 Code Review — Automated Pull Request Review
 
 **Repository:** https://github.com/anthropics/claude-code/blob/main/plugins/code-review/README.md
 
@@ -155,7 +181,7 @@ The review flow automatically skips closed, draft, trivial, or already-reviewed 
 
 ---
 
-### 2.4 Security Guidance — Secure Code Generation
+### 2.5 Security Guidance — Secure Code Generation
 
 **Repository:** https://github.com/anthropics/claude-code/tree/main/plugins/security-guidance
 
@@ -171,7 +197,7 @@ This guidance is typically applied automatically during implementation and revie
 
 ---
 
-### 2.5 OpenCode-Mem — Persistent Cross-Session Memory
+### 2.6 OpenCode-Mem — Persistent Cross-Session Memory
 
 **Repository:** https://github.com/tickernelz/opencode-mem
 
@@ -248,6 +274,7 @@ Access the web UI at `http://127.0.0.1:4747` for visual memory browsing and mana
 ```
 [ ] Install Superpowers (spec-driven development + TDD)
 [ ] Install @nextlevelbuilder/ui-ux-pro-max-skill (if the project has a UI)
+[ ] Install Agent Browser (if the project needs browser automation or web interaction testing)
 [ ] Install Code Review (requires authenticated gh CLI)
 [ ] Install Security Guidance
 [ ] Install OpenCode-Mem (cross-session memory)
@@ -261,6 +288,7 @@ Access the web UI at `http://127.0.0.1:4747` for visual memory browsing and mana
 |----------|------|
 | Superpowers | https://github.com/obra/superpowers |
 | UI UX Pro Max Skill | https://github.com/nextlevelbuilder/ui-ux-pro-max-skill |
+| Agent Browser | https://github.com/vercel-labs/agent-browser/tree/main |
 | Code Review Plugin | https://github.com/anthropics/claude-code/blob/main/plugins/code-review/README.md |
 | Security Guidance Plugin | https://github.com/anthropics/claude-code/tree/main/plugins/security-guidance |
 | OpenCode-Mem | https://github.com/tickernelz/opencode-mem |
