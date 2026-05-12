@@ -1,6 +1,6 @@
 # Coding Harness — Setup Guide
 
-This guide describes how to assemble a development harness for AI coding workflows, composed of plugins, tools, and skills covering spec-driven development, frontend design, code review, security, browser automation, and persistent memory.
+This guide describes how to assemble a development harness for AI coding workflows, composed of plugins, tools, and skills covering spec-driven development, frontend design, code review, security, browser automation, database best practices, and persistent memory.
 
 The harness is **agent-agnostic**: the core (`CONSTITUTION.md`) works with any assistant, CLI, editor integration, or coding environment.
 
@@ -139,7 +139,33 @@ Use it when your workflow requires actions such as:
 
 ---
 
-### 2.4 Code Review — Automated Pull Request Review
+### 2.4 Supabase Postgres Best Practices — Database Performance and Schema Guidance
+
+**Repository:** https://github.com/supabase/agent-skills/tree/3e7771598f3a03d29533208dd7b5a50bdfc8860f/skills/supabase-postgres-best-practices
+
+A Postgres optimization and database design skill maintained by Supabase. It provides practical guidance for query performance, indexing, connection management, security and RLS, schema design, locking, monitoring, and Postgres-specific optimization patterns.
+
+#### Installation
+
+Reference the skill in your environment using:
+
+```
+@supabase/agent-skills/files/skills/supabase-postgres-best-practices
+```
+
+#### Usage
+
+Use this skill when your workflow involves tasks such as:
+
+```
+"Optimize this Postgres query and suggest indexes"
+"Review this schema for Supabase and Postgres best practices"
+"Improve RLS performance and database access patterns"
+```
+
+---
+
+### 2.5 Code Review — Automated Pull Request Review
 
 **Repository:** https://github.com/anthropics/claude-code/blob/main/plugins/code-review/README.md
 
@@ -181,7 +207,7 @@ The review flow automatically skips closed, draft, trivial, or already-reviewed 
 
 ---
 
-### 2.5 Security Guidance — Secure Code Generation
+### 2.6 Security Guidance — Secure Code Generation
 
 **Repository:** https://github.com/anthropics/claude-code/tree/main/plugins/security-guidance
 
@@ -197,7 +223,7 @@ This guidance is typically applied automatically during implementation and revie
 
 ---
 
-### 2.6 OpenCode-Mem — Persistent Cross-Session Memory
+### 2.7 OpenCode-Mem — Persistent Cross-Session Memory
 
 **Repository:** https://github.com/tickernelz/opencode-mem
 
@@ -275,6 +301,7 @@ Access the web UI at `http://127.0.0.1:4747` for visual memory browsing and mana
 [ ] Install Superpowers (spec-driven development + TDD)
 [ ] Install @nextlevelbuilder/ui-ux-pro-max-skill (if the project has a UI)
 [ ] Install Agent Browser (if the project needs browser automation or web interaction testing)
+[ ] Install Supabase Postgres Best Practices (if the project uses Supabase or Postgres)
 [ ] Install Code Review (requires authenticated gh CLI)
 [ ] Install Security Guidance
 [ ] Install OpenCode-Mem (cross-session memory)
@@ -289,6 +316,7 @@ Access the web UI at `http://127.0.0.1:4747` for visual memory browsing and mana
 | Superpowers | https://github.com/obra/superpowers |
 | UI UX Pro Max Skill | https://github.com/nextlevelbuilder/ui-ux-pro-max-skill |
 | Agent Browser | https://github.com/vercel-labs/agent-browser/tree/main |
+| Supabase Postgres Best Practices | https://github.com/supabase/agent-skills/tree/3e7771598f3a03d29533208dd7b5a50bdfc8860f/skills/supabase-postgres-best-practices |
 | Code Review Plugin | https://github.com/anthropics/claude-code/blob/main/plugins/code-review/README.md |
 | Security Guidance Plugin | https://github.com/anthropics/claude-code/tree/main/plugins/security-guidance |
 | OpenCode-Mem | https://github.com/tickernelz/opencode-mem |
