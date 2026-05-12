@@ -2,7 +2,7 @@
 
 This guide describes how to assemble a development harness for AI coding agents, composed of plugins and skills covering spec-driven development, frontend design, code review, security, and cross-session memory.
 
-The harness is **agent-agnostic**: the core (`CONSTITUTION.md`) works with any agent. Individual plugins are agent-specific and labeled accordingly.
+The harness is **agent-agnostic**: the core (`CONSTITUTION.md`) works with any agent.
 
 ---
 
@@ -52,11 +52,7 @@ Non-compliance invalidates any output generated.
 
 ## 2. Plugins and Skills
 
-> Plugins are agent-specific. Each section below indicates compatible agents.
-
 ### 2.1 Superpowers — Spec-Driven Development
-
-**Compatible agents:** Claude Code
 
 **Repository:** https://github.com/obra/superpowers
 
@@ -93,8 +89,6 @@ Skills are triggered automatically by the agent — no manual invocation is need
 
 ### 2.2 Frontend Design — Production-Ready Interfaces
 
-**Compatible agents:** Claude Code
-
 **Repository:** https://github.com/anthropics/claude-code/tree/main/plugins/frontend-design
 
 Generates frontend interfaces with deliberate aesthetic choices, typography, color palettes, and animations — avoiding the generic look of AI-generated code.
@@ -118,8 +112,6 @@ Simply describe what you want to build; the plugin is invoked automatically for 
 ---
 
 ### 2.3 Code Review — Automated Pull Request Review
-
-**Compatible agents:** Claude Code
 
 **Repository:** https://github.com/anthropics/claude-code/blob/main/plugins/code-review/README.md
 
@@ -163,8 +155,6 @@ The plugin automatically skips closed, draft, trivial, or already-reviewed PRs. 
 
 ### 2.4 Security Guidance — Secure Code Generation
 
-**Compatible agents:** Claude Code
-
 **Repository:** https://github.com/anthropics/claude-code/tree/main/plugins/security-guidance
 
 Guides the agent to apply security best practices during code generation and review.
@@ -181,20 +171,18 @@ The plugin is activated automatically while writing code — no manual invocatio
 
 ### 2.5 OpenCode-Mem — Persistent Cross-Session Memory
 
-**Compatible agents:** OpenCode
-
 **Repository:** https://github.com/tickernelz/opencode-mem
 
-A persistent memory system for AI coding agents that enables long-term context retention across sessions using a local vector database. Features automatic user profile learning, smart deduplication, multi-provider AI support (OpenAI, Anthropic), 12+ local embedding models, and a full-featured web UI.
+A persistent memory system for AI coding agents that enables long-term context retention across sessions using a local vector database. Features automatic user profile learning, smart deduplication, memory scoping, and a web UI for inspection.
 
 #### Prerequisites
 
 - [Bun](https://bun.sh/) (recommended runtime)
-- Standard OpenCode plugin environment
+- Standard plugin environment
 
 #### Installation
 
-Add to your OpenCode configuration at `~/.config/opencode/opencode.json`:
+Add to your configuration at `~/.config/opencode/opencode.json`:
 
 ```json
 {
@@ -251,21 +239,16 @@ Access the web UI at `http://127.0.0.1:4747` for visual memory browsing and mana
 [ ] Copy CONSTITUTION.md to the project root
 [ ] Add the CONSTITUTION.md read instruction to your agent's instructions file
       (CLAUDE.md, AGENTS.md, .cursorrules, .github/copilot-instructions.md, etc.)
-[ ] Install the plugins compatible with your agent (see section 2)
+[ ] Install the plugins and skills you want to use (see section 2)
 ```
 
-### Claude Code
+### Suggested stack
 
 ```
 [ ] Install Superpowers (spec-driven development + TDD)
 [ ] Install Frontend Design (if the project has a UI)
 [ ] Install Code Review (requires authenticated gh CLI)
 [ ] Install Security Guidance
-```
-
-### OpenCode
-
-```
 [ ] Install OpenCode-Mem (cross-session memory)
 ```
 
@@ -296,4 +279,4 @@ This project was inspired by the Anthropic engineering paper:
 
 ## To Do
 
-- [ ] **Evaluation feedback mechanism** — The paper highlights that an effective harness requires a robust feedback loop to evaluate the quality of implemented code (correctness, adherence to spec, test results, lint/type errors). This is currently not covered by any plugin in this harness and needs to be designed and implemented.
+- [ ] **Evaluation feedback mechanism** — The paper highlights that an effective harness requires a robust feedback loop to evaluate the quality of implemented code (correctness, adherence to spec, and iteration quality).
