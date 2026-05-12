@@ -1,22 +1,22 @@
 # Coding Harness — Setup Guide
 
-This guide describes how to assemble a development harness for AI coding agents, composed of plugins and skills covering spec-driven development, frontend design, code review, security, and cross-session memory.
+This guide describes how to assemble a development harness for AI coding workflows, composed of plugins, tools, and skills covering spec-driven development, frontend design, code review, security, and cross-session memory.
 
-The harness is **agent-agnostic**: the core (`CONSTITUTION.md`) works with any agent.
+The harness is **agent-agnostic**: the core (`CONSTITUTION.md`) works with any assistant, CLI, editor integration, or coding environment.
 
 ---
 
 ## Prerequisites
 
-- An AI coding agent (e.g., [Claude Code](https://claude.ai/code), [OpenCode](https://opencode.ai), [Cursor](https://cursor.sh), Codex, Hermes, etc.)
-- [GitHub CLI](https://cli.github.com/) (`gh`) installed and authenticated (required for the code review plugin)
+- An AI coding environment (for example: CLI assistants, editor integrations, or agent-based coding tools)
+- [GitHub CLI](https://cli.github.com/) (`gh`) installed and authenticated (required for the code review workflow)
 - Git
 
 ---
 
 ## 1. CONSTITUTION.md Setup
 
-`CONSTITUTION.md` defines the architectural and behavioral principles the agent **must** follow in every session. It must be placed at the root of each project.
+`CONSTITUTION.md` defines the architectural and behavioral principles that must be followed in every session. It must be placed at the root of each project.
 
 ### 1.1 Copy to the project root
 
@@ -24,24 +24,26 @@ The harness is **agent-agnostic**: the core (`CONSTITUTION.md`) works with any a
 cp /path/to/skills/harness/CONSTITUTION.md ./CONSTITUTION.md
 ```
 
-### 1.2 Register in the agent instructions file
+### 1.2 Register in your environment instructions file
 
-Each agent reads a specific instructions file at the project root. Use the table below to identify the correct file for your agent:
+Each coding environment typically provides a project-level instructions file or configuration entry. Add a reference to `CONSTITUTION.md` in the mechanism your environment uses for persistent project instructions.
 
-| Agent | Instructions file |
-|-------|-------------------|
+Common examples include:
+
+| Environment | Instructions file |
+|------------|-------------------|
 | Claude Code | `CLAUDE.md` |
 | OpenCode / Codex | `AGENTS.md` |
 | Cursor | `.cursorrules` |
 | GitHub Copilot | `.github/copilot-instructions.md` |
-| Other agents | Check the agent's documentation |
+| Other environments | Check the environment documentation |
 
 Create the file if it does not exist, then add the snippet below:
 
 ```markdown
 ## Project Constitution
 
-At the start of **every session**, the agent MUST read the `CONSTITUTION.md` file located at the
+At the start of **every session**, the coding system MUST read the `CONSTITUTION.md` file located at the
 root of this repository and rigorously follow all its principles, architectural rules, and
 behavioral guidelines throughout the entire session.
 
@@ -50,13 +52,13 @@ Non-compliance invalidates any output generated.
 
 ---
 
-## 2. Plugins and Skills
+## 2. Plugins, Tools, and Skills
 
 ### 2.1 Superpowers — Spec-Driven Development
 
 **Repository:** https://github.com/obra/superpowers
 
-A complete software development methodology for AI coding agents: brainstorming with spec validation, detailed implementation plans, strict TDD, and subagent-driven development.
+A complete software development methodology for AI-assisted coding: brainstorming with spec validation, detailed implementation plans, strict TDD, and multi-step task execution.
 
 #### Installation
 
@@ -83,7 +85,7 @@ A complete software development methodology for AI coding agents: brainstorming 
 | 6 | `requesting-code-review` | Review before advancing |
 | 7 | `finishing-a-development-branch` | Merge/PR/discard |
 
-Skills are triggered automatically by the agent — no manual invocation is needed.
+These skills may be triggered automatically or manually depending on the environment in which they are installed.
 
 ---
 
@@ -101,7 +103,7 @@ Generates frontend interfaces with deliberate aesthetic choices, typography, col
 
 #### Usage
 
-Simply describe what you want to build; the plugin is invoked automatically for frontend work:
+Describe the interface you want to build using prompts such as:
 
 ```
 "Create a dashboard for a music streaming app"
@@ -115,7 +117,7 @@ Simply describe what you want to build; the plugin is invoked automatically for 
 
 **Repository:** https://github.com/anthropics/claude-code/blob/main/plugins/code-review/README.md
 
-Launches multiple agents in parallel to audit PRs from distinct perspectives (guideline compliance, bugs, git history), with a confidence scoring system that filters out false positives.
+Launches multiple review passes in parallel to audit pull requests from distinct perspectives (guideline compliance, bugs, and git history), with a confidence scoring system that filters out false positives.
 
 #### Installation
 
@@ -143,13 +145,13 @@ gh auth login
 /code-review --comment
 ```
 
-The plugin automatically skips closed, draft, trivial, or already-reviewed PRs. Only issues with confidence ≥ 80 are reported.
+The review flow automatically skips closed, draft, trivial, or already-reviewed pull requests. Only issues with confidence ≥ 80 are reported.
 
 #### Best practices
 
-- Keep clear agent instructions files (e.g., `CLAUDE.md`, `AGENTS.md`) in the repository so the agent can verify guideline compliance
-- Run on all PRs with meaningful changes
-- Update the instructions file based on recurring patterns identified in reviews
+- Keep clear project instruction files in the repository so the review workflow can verify guideline compliance
+- Run reviews on all pull requests with meaningful changes
+- Update project instructions based on recurring patterns identified in reviews
 
 ---
 
@@ -157,7 +159,7 @@ The plugin automatically skips closed, draft, trivial, or already-reviewed PRs. 
 
 **Repository:** https://github.com/anthropics/claude-code/tree/main/plugins/security-guidance
 
-Guides the agent to apply security best practices during code generation and review.
+Provides guidance for applying security best practices during code generation and review.
 
 #### Installation
 
@@ -165,7 +167,7 @@ Guides the agent to apply security best practices during code generation and rev
 /plugin install security-guidance@claude-plugins-official
 ```
 
-The plugin is activated automatically while writing code — no manual invocation required.
+This guidance is typically applied automatically during implementation and review workflows.
 
 ---
 
@@ -173,12 +175,12 @@ The plugin is activated automatically while writing code — no manual invocatio
 
 **Repository:** https://github.com/tickernelz/opencode-mem
 
-A persistent memory system for AI coding agents that enables long-term context retention across sessions using a local vector database. Features automatic user profile learning, smart deduplication, memory scoping, and a web UI for inspection.
+A persistent memory system for AI coding workflows that enables long-term context retention across sessions using a local vector database. Features automatic user profile learning, smart deduplication, memory scoping, and a web UI for inspection.
 
 #### Prerequisites
 
 - [Bun](https://bun.sh/) (recommended runtime)
-- Standard plugin environment
+- A compatible plugin or extension environment
 
 #### Installation
 
@@ -207,7 +209,7 @@ Create or edit `~/.config/opencode/opencode-mem.jsonc`:
   "webServerPort": 4747,
   "autoCaptureEnabled": true,
 
-  // Use any provider already authenticated in OpenCode (no separate API key needed)
+  // Use any provider already authenticated in the host environment (no separate API key needed)
   "opencodeProvider": "anthropic",
   "opencodeModel": "claude-haiku-4-5-20251001"
 }
@@ -237,9 +239,8 @@ Access the web UI at `http://127.0.0.1:4747` for visual memory browsing and mana
 
 ```
 [ ] Copy CONSTITUTION.md to the project root
-[ ] Add the CONSTITUTION.md read instruction to your agent's instructions file
-      (CLAUDE.md, AGENTS.md, .cursorrules, .github/copilot-instructions.md, etc.)
-[ ] Install the plugins and skills you want to use (see section 2)
+[ ] Add the CONSTITUTION.md read instruction to your project instructions mechanism
+[ ] Install the plugins, tools, and skills you want to use (see section 2)
 ```
 
 ### Suggested stack
