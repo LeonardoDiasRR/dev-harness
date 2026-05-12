@@ -1,6 +1,6 @@
 # Coding Harness — Setup Guide
 
-This guide describes how to assemble a development harness for AI coding workflows, composed of plugins, tools, and skills covering spec-driven development, frontend design, code review, security, and cross-session memory.
+This guide describes how to assemble a development harness for AI coding workflows, composed of plugins, tools, and skills covering spec-driven development, frontend design, code review, security, and persistent memory.
 
 The harness is **agent-agnostic**: the core (`CONSTITUTION.md`) works with any assistant, CLI, editor integration, or coding environment.
 
@@ -89,16 +89,16 @@ These skills may be triggered automatically or manually depending on the environ
 
 ---
 
-### 2.2 Frontend Design — Production-Ready Interfaces
+### 2.2 UI UX Pro Max Skill — Production-Ready Interfaces
 
-**Repository:** https://github.com/anthropics/claude-code/tree/main/plugins/frontend-design
+**Repository:** https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
 
-Generates frontend interfaces with deliberate aesthetic choices, typography, color palettes, and animations — avoiding the generic look of AI-generated code.
+A UI/UX-focused skill for generating polished, production-ready interfaces with strong visual hierarchy, layout quality, and refined user experience decisions.
 
 #### Installation
 
 ```
-/plugin install frontend-design@claude-plugins-official
+/plugin install @nextlevelbuilder/ui-ux-pro-max-skill
 ```
 
 #### Usage
@@ -175,7 +175,7 @@ This guidance is typically applied automatically during implementation and revie
 
 **Repository:** https://github.com/tickernelz/opencode-mem
 
-A persistent memory system for AI coding workflows that enables long-term context retention across sessions using a local vector database. Features automatic user profile learning, smart deduplication, memory scoping, and a web UI for inspection.
+A persistent memory system for AI coding workflows that enables long-term context retention across sessions using a local vector database. Features automatic user profile learning, smart deduplication, and semantic recall.
 
 #### Prerequisites
 
@@ -247,7 +247,7 @@ Access the web UI at `http://127.0.0.1:4747` for visual memory browsing and mana
 
 ```
 [ ] Install Superpowers (spec-driven development + TDD)
-[ ] Install Frontend Design (if the project has a UI)
+[ ] Install @nextlevelbuilder/ui-ux-pro-max-skill (if the project has a UI)
 [ ] Install Code Review (requires authenticated gh CLI)
 [ ] Install Security Guidance
 [ ] Install OpenCode-Mem (cross-session memory)
@@ -260,7 +260,7 @@ Access the web UI at `http://127.0.0.1:4747` for visual memory browsing and mana
 | Resource | Link |
 |----------|------|
 | Superpowers | https://github.com/obra/superpowers |
-| Frontend Design Plugin | https://github.com/anthropics/claude-code/tree/main/plugins/frontend-design |
+| UI UX Pro Max Skill | https://github.com/nextlevelbuilder/ui-ux-pro-max-skill |
 | Code Review Plugin | https://github.com/anthropics/claude-code/blob/main/plugins/code-review/README.md |
 | Security Guidance Plugin | https://github.com/anthropics/claude-code/tree/main/plugins/security-guidance |
 | OpenCode-Mem | https://github.com/tickernelz/opencode-mem |
@@ -280,4 +280,4 @@ This project was inspired by the Anthropic engineering paper:
 
 ## To Do
 
-- [ ] **Evaluation feedback mechanism** — The paper highlights that an effective harness requires a robust feedback loop to evaluate the quality of implemented code (correctness, adherence to spec, and iteration quality).
+- [ ] **Evaluation feedback mechanism** — The paper highlights that an effective harness requires a robust feedback loop to evaluate the quality of implemented code (correctness, adherence to spec, and maintainability) and use those signals to improve subsequent iterations.
