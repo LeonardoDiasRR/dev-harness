@@ -1,6 +1,6 @@
 # Coding Harness — Setup Guide
 
-This guide describes how to assemble a development harness for AI coding workflows, composed of plugins, tools, and skills covering spec-driven development, frontend design, code review, security, browser automation, database best practices, and persistent memory.
+This guide describes how to assemble a development harness for AI coding workflows, composed of plugins, tools, and skills covering spec-driven development, frontend design, browser automation, database best practices, code review, security, and persistent memory.
 
 The harness is **agent-agnostic**: the core (`CONSTITUTION.md`) works with any assistant, CLI, editor integration, or coding environment.
 
@@ -56,9 +56,10 @@ Non-compliance invalidates any output generated.
 
 ### 2.1 Superpowers — Spec-Driven Development
 
+**Type:** Skill suite  
 **Repository:** https://github.com/obra/superpowers
 
-A complete software development methodology for AI-assisted coding: brainstorming with spec validation, detailed implementation plans, strict TDD, and multi-step task execution.
+A complete software development methodology for AI-assisted coding, including spec validation, detailed planning, strict TDD, and structured multi-step execution.
 
 #### Installation
 
@@ -73,7 +74,7 @@ A complete software development methodology for AI-assisted coding: brainstormin
 /plugin install superpowers@superpowers-marketplace
 ```
 
-#### Main workflow
+#### Recommended workflow
 
 | Step | Skill | Description |
 |------|-------|-------------|
@@ -82,8 +83,8 @@ A complete software development methodology for AI-assisted coding: brainstormin
 | 3 | `writing-plans` | Generates a granular task plan |
 | 4 | `subagent-driven-development` | Executes tasks with two-stage review |
 | 5 | `test-driven-development` | RED → GREEN → REFACTOR cycle |
-| 6 | `requesting-code-review` | Review before advancing |
-| 7 | `finishing-a-development-branch` | Merge/PR/discard |
+| 6 | `requesting-code-review` | Runs review before advancing |
+| 7 | `finishing-a-development-branch` | Merge, open a PR, or discard |
 
 These skills may be triggered automatically or manually depending on the environment in which they are installed.
 
@@ -91,9 +92,10 @@ These skills may be triggered automatically or manually depending on the environ
 
 ### 2.2 UI UX Pro Max Skill — Production-Ready Interfaces
 
+**Type:** Skill  
 **Repository:** https://github.com/nextlevelbuilder/ui-ux-pro-max-skill
 
-A UI/UX-focused skill for generating polished, production-ready interfaces with strong visual hierarchy, layout quality, and refined user experience decisions.
+A UI/UX-focused skill for generating polished, production-ready interfaces with strong visual hierarchy, better layouts, and more refined user experience decisions.
 
 #### Installation
 
@@ -101,7 +103,7 @@ A UI/UX-focused skill for generating polished, production-ready interfaces with 
 /plugin install @nextlevelbuilder/ui-ux-pro-max-skill
 ```
 
-#### Usage
+#### Typical usage
 
 Describe the interface you want to build using prompts such as:
 
@@ -115,9 +117,10 @@ Describe the interface you want to build using prompts such as:
 
 ### 2.3 Agent Browser — Browser Automation for AI Agents
 
+**Type:** Plugin / tool  
 **Repository:** https://github.com/vercel-labs/agent-browser/tree/main
 
-A browser automation plugin that enables AI agents to navigate pages, interact with web interfaces, and perform browser-based workflows for testing, research, and task execution.
+A browser automation tool that enables AI agents to navigate pages, interact with web interfaces, and perform browser-based workflows for testing, research, and task execution.
 
 #### Installation
 
@@ -127,7 +130,7 @@ Follow the installation and setup instructions in the repository:
 https://github.com/vercel-labs/agent-browser/tree/main
 ```
 
-#### Usage
+#### Typical usage
 
 Use it when your workflow requires actions such as:
 
@@ -141,6 +144,7 @@ Use it when your workflow requires actions such as:
 
 ### 2.4 Supabase Postgres Best Practices — Database Performance and Schema Guidance
 
+**Type:** Skill  
 **Repository:** https://github.com/supabase/agent-skills/tree/3e7771598f3a03d29533208dd7b5a50bdfc8860f/skills/supabase-postgres-best-practices
 
 A Postgres optimization and database design skill maintained by Supabase. It provides practical guidance for query performance, indexing, connection management, security and RLS, schema design, locking, monitoring, and Postgres-specific optimization patterns.
@@ -153,7 +157,7 @@ Reference the skill in your environment using:
 @supabase/agent-skills/files/skills/supabase-postgres-best-practices
 ```
 
-#### Usage
+#### Typical usage
 
 Use this skill when your workflow involves tasks such as:
 
@@ -167,9 +171,10 @@ Use this skill when your workflow involves tasks such as:
 
 ### 2.5 Code Review — Automated Pull Request Review
 
+**Type:** Plugin  
 **Repository:** https://github.com/anthropics/claude-code/blob/main/plugins/code-review/README.md
 
-Launches multiple review passes in parallel to audit pull requests from distinct perspectives (guideline compliance, bugs, and git history), with a confidence scoring system that filters out false positives.
+A pull request review plugin that runs multiple review passes in parallel to audit guideline compliance, bugs, and git history, while using confidence scoring to reduce false positives.
 
 #### Installation
 
@@ -187,7 +192,7 @@ brew install gh
 gh auth login
 ```
 
-#### Usage
+#### Typical usage
 
 ```
 # Local review (output to terminal):
@@ -209,9 +214,10 @@ The review flow automatically skips closed, draft, trivial, or already-reviewed 
 
 ### 2.6 Security Guidance — Secure Code Generation
 
+**Type:** Plugin / guidance  
 **Repository:** https://github.com/anthropics/claude-code/tree/main/plugins/security-guidance
 
-Provides guidance for applying security best practices during code generation and review.
+A security-oriented plugin that helps apply secure coding best practices during implementation and review workflows.
 
 #### Installation
 
@@ -219,15 +225,18 @@ Provides guidance for applying security best practices during code generation an
 /plugin install security-guidance@claude-plugins-official
 ```
 
+#### Typical usage
+
 This guidance is typically applied automatically during implementation and review workflows.
 
 ---
 
 ### 2.7 OpenCode-Mem — Persistent Cross-Session Memory
 
+**Type:** Plugin / memory system  
 **Repository:** https://github.com/tickernelz/opencode-mem
 
-A persistent memory system for AI coding workflows that enables long-term context retention across sessions using a local vector database. Features automatic user profile learning, smart deduplication, and semantic recall.
+A persistent memory system for AI coding workflows that enables long-term context retention across sessions using a local vector database. It includes automatic user profile learning, smart deduplication, and semantic recall.
 
 #### Prerequisites
 
@@ -267,7 +276,7 @@ Create or edit `~/.config/opencode/opencode-mem.jsonc`:
 }
 ```
 
-#### Usage
+#### Typical usage
 
 ```
 memory({ mode: "add", content: "Project uses microservices architecture" });
