@@ -2,7 +2,7 @@
 
 This guide describes how to assemble a development harness for AI coding workflows, composed of plugins, tools, and skills covering spec-driven development, frontend design, browser automation, database best practices, code review, security, and persistent memory.
 
-The harness is **agent-agnostic**: the core (`CONSTITUTION.md`) works with any assistant, CLI, editor integration, or coding environment.
+The harness is **agent-agnostic**: every plugin, tool, skill, and the core `CONSTITUTION.md` work with any assistant, CLI, editor integration, or coding environment — Claude Code, Codex, Cursor, OpenCode, Gemini CLI, Copilot, Windsurf, Cline, and others.
 
 ---
 
@@ -53,6 +53,8 @@ Non-compliance invalidates any output generated.
 ---
 
 ## 2. Plugins, Tools, and Skills
+
+All items in this section are **environment-agnostic** — they work in Claude Code, Codex, Cursor, OpenCode, Gemini CLI, Copilot, Windsurf, Cline, and other AI coding tools. Installation commands shown follow each tool's own conventions; adapt the syntax to your environment as needed.
 
 ### 2.1 Superpowers — Spec-Driven Development
 
@@ -237,6 +239,44 @@ This guidance is typically applied automatically during implementation and revie
 **Repository:** https://github.com/tickernelz/opencode-mem
 
 A persistent memory system for AI coding workflows that enables long-term context retention across sessions using a local vector database. It includes automatic user profile learning, smart deduplication, and semantic recall.
+
+---
+
+### 2.8 RTK — CLI Proxy for LLM Token Optimization
+
+**Type:** CLI tool / proxy  
+**Repository:** https://github.com/rtk-ai/rtk
+
+A high-performance CLI proxy that intercepts and filters command output before it reaches the LLM context, reducing token consumption by 60–90% on common dev commands (`git`, `cat`, `grep`, `cargo test`, `pytest`, etc.). Single Rust binary, zero dependencies, <10ms overhead.
+
+#### Installation
+
+**Homebrew (macOS/Linux):**
+```bash
+brew install rtk
+```
+
+**Quick install (Linux/macOS):**
+```bash
+curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
+```
+
+**Cargo:**
+```bash
+cargo install --git https://github.com/rtk-ai/rtk
+```
+
+**Windows:** Download the zip from [releases](https://github.com/rtk-ai/rtk/releases), extract `rtk.exe` to a directory in your PATH.
+
+#### Quick start
+
+```bash
+rtk init -g              # Install hook for Claude Code / Copilot
+rtk init -g --opencode   # OpenCode plugin
+rtk gain                 # Show token savings stats
+```
+
+After installing, restart your AI tool. The hook automatically rewrites Bash commands (e.g. `git status` → `rtk git status`), delivering compact output without manual intervention.
 
 #### Prerequisites
 
