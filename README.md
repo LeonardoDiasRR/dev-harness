@@ -117,29 +117,42 @@ Describe the interface you want to build using prompts such as:
 
 ---
 
-### 2.3 Agent Browser — Browser Automation for AI Agents
+### 2.3 Playwright MCP — Browser Automation via Model Context Protocol
 
-**Type:** Plugin / tool  
-**Repository:** https://github.com/vercel-labs/agent-browser/tree/main
+**Type:** MCP server  
+**Repository:** https://github.com/microsoft/playwright-mcp/tree/main
 
-A browser automation tool that enables AI agents to navigate pages, interact with web interfaces, and perform browser-based workflows for testing, research, and task execution.
+An MCP server maintained by Microsoft that gives AI agents browser automation capabilities through Playwright, enabling page navigation, interaction, inspection, and end-to-end workflow validation from MCP-compatible coding environments.
 
 #### Installation
 
-Follow the installation and setup instructions in the repository:
+Install or register the MCP server according to your environment's MCP configuration format. The server can be run directly with `npx`:
 
+```bash
+npx @playwright/mcp@latest
 ```
-https://github.com/vercel-labs/agent-browser/tree/main
+
+Example MCP server configuration:
+
+```json
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
+    }
+  }
+}
 ```
 
 #### Typical usage
 
-Use it when your workflow requires actions such as:
+Use it when your workflow requires browser-based actions such as:
 
 ```
-"Open the app in a browser and validate the main flow"
-"Navigate through a signup form and inspect UI behavior"
-"Use browser automation to verify a dashboard interaction"
+"Open the app and verify the signup flow"
+"Inspect this page and identify accessibility issues"
+"Click through the dashboard and validate the main user journey"
 ```
 
 ---
@@ -336,46 +349,6 @@ After installing, restart your AI tool. The hook automatically rewrites Bash com
 
 ---
 
-### 2.9 Playwright MCP — Browser Automation via Model Context Protocol
-
-**Type:** MCP server  
-**Repository:** https://github.com/microsoft/playwright-mcp/tree/main
-
-An MCP server maintained by Microsoft that gives AI agents browser automation capabilities through Playwright, enabling page navigation, interaction, inspection, and end-to-end workflow validation from MCP-compatible coding environments.
-
-#### Installation
-
-Install or register the MCP server according to your environment's MCP configuration format. The server can be run directly with `npx`:
-
-```bash
-npx @playwright/mcp@latest
-```
-
-Example MCP server configuration:
-
-```json
-{
-  "mcpServers": {
-    "playwright": {
-      "command": "npx",
-      "args": ["@playwright/mcp@latest"]
-    }
-  }
-}
-```
-
-#### Typical usage
-
-Use it when your workflow requires browser-based actions such as:
-
-```
-"Open the app and verify the signup flow"
-"Inspect this page and identify accessibility issues"
-"Click through the dashboard and validate the main user journey"
-```
-
----
-
 ## 3. Per-project setup checklist
 
 ```
@@ -389,12 +362,11 @@ Use it when your workflow requires browser-based actions such as:
 ```
 [ ] Install Superpowers (spec-driven development + TDD)
 [ ] Install @nextlevelbuilder/ui-ux-pro-max-skill (if the project has a UI)
-[ ] Install Agent Browser (if the project needs browser automation or web interaction testing)
+[ ] Install Playwright MCP (if the project needs browser automation through MCP)
 [ ] Install Supabase Postgres Best Practices (if the project uses Supabase or Postgres)
 [ ] Install Code Review (requires authenticated gh CLI)
 [ ] Install Security Guidance
 [ ] Install OpenCode-Mem (cross-session memory)
-[ ] Install Playwright MCP (if the project needs browser automation through MCP)
 ```
 
 ---
@@ -405,7 +377,6 @@ Use it when your workflow requires browser-based actions such as:
 |----------|------|
 | Superpowers | https://github.com/obra/superpowers |
 | UI UX Pro Max Skill | https://github.com/nextlevelbuilder/ui-ux-pro-max-skill |
-| Agent Browser | https://github.com/vercel-labs/agent-browser/tree/main |
 | Supabase Postgres Best Practices | https://github.com/supabase/agent-skills/tree/3e7771598f3a03d29533208dd7b5a50bdfc8860f/skills/supabase-postgres-best-practices |
 | Code Review Plugin | https://github.com/anthropics/claude-code/blob/main/plugins/code-review/README.md |
 | Security Guidance Plugin | https://github.com/anthropics/claude-code/tree/main/plugins/security-guidance |
