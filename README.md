@@ -336,6 +336,86 @@ Access the web UI at `http://127.0.0.1:4747` for visual memory browsing and mana
 
 ---
 
+### 2.9 Context7 — Up-to-Date Code Documentation for LLMs
+
+**Type:** MCP server / CLI + Skills  
+**Repository:** https://github.com/upstash/context7  
+**Website:** https://context7.com
+
+Context7 provides **up-to-date, version-specific** documentation and code examples straight from the source into your AI agent's prompt. It solves three common problems: outdated code examples from old training data, hallucinated APIs that don't exist, and generic answers for old package versions.
+
+It works in **two modes**:
+
+| Mode | Description |
+|------|-------------|
+| **CLI + Skills** | Installs a skill that guides your agent to fetch docs using `ctx7` CLI commands (no MCP required) |
+| **MCP** | Registers a Context7 MCP server so your agent can call documentation tools natively |
+
+#### Installation (quick setup)
+
+```shell
+npx ctx7 setup
+```
+
+- Authenticates via OAuth, generates an API key, installs the skill
+- Choose between **CLI + Skills** or **MCP** mode during setup
+- Use `--cursor`, `--claude`, or `--opencode` to target a specific agent
+
+#### Manual MCP configuration (for other MCP clients)
+
+Use the server URL `https://mcp.context7.com/mcp` and pass your API key via the `CONTEXT7_API_KEY` header.  
+[Full client-specific setup guide →](https://context7.com/docs/resources/all-clients)
+
+#### Available tools
+
+**CLI Commands:**
+
+| Command | Description |
+|---------|-------------|
+| `ctx7 library <name> <query>` | Searches the Context7 index by library name and returns matching libraries with their IDs |
+| `ctx7 docs <libraryId> <query>` | Retrieves documentation for a library (e.g., `/mongodb/docs`, `/vercel/next.js`) |
+
+**MCP Tools:**
+
+| Tool | Parameters | Description |
+|------|------------|-------------|
+| `resolve-library-id` | `query`, `libraryName` | Resolves a general library name into a Context7-compatible library ID |
+| `query-docs` | `libraryId`, `query` | Retrieves documentation for a specific library |
+
+#### Typical usage
+
+Add a `use context7` or `use context7` instruction to your prompts:
+
+```adblock
+Create a Next.js middleware that checks for a valid JWT in cookies
+and redirects unauthenticated users to `/login`. use context7
+```
+
+```adblock
+Configure a Cloudflare Worker script to cache
+JSON API responses for five minutes. use context7
+```
+
+#### Important tips
+
+- **Specify a library ID:** Use `use library /supabase/supabase` to skip library-matching
+- **Specify a version:** E.g., "How do I set up Next.js 14 middleware?" — Context7 automatically matches the appropriate version
+- **Add a rule:** For automatic trigger without explicit `use context7`, add a rule to your environment's instructions file (e.g., `CLAUDE.md`, `.cursorrules`)
+
+```
+Always use Context7 when I need library/API documentation, code generation, setup or configuration steps without me having to explicitly ask.
+```
+
+#### Removal
+
+```shell
+npx ctx7 remove
+```
+
+If globally installed via `npm install -g ctx7`, uninstall separately: `npm uninstall -g ctx7`.
+
+---
+
 ## 3. Per-project setup checklist
 
 ```
@@ -354,6 +434,7 @@ Access the web UI at `http://127.0.0.1:4747` for visual memory browsing and mana
 [ ] Install Code Review (requires authenticated gh CLI)
 [ ] Install Security Guidance
 [ ] Install OpenCode-Mem (cross-session memory)
+[ ] Install Context7 (up-to-date library/API documentation for LLMs)
 ```
 
 ---
@@ -369,6 +450,7 @@ Access the web UI at `http://127.0.0.1:4747` for visual memory browsing and mana
 | Code Review Plugin | https://github.com/anthropics/claude-code/blob/main/plugins/code-review/README.md |
 | Security Guidance Plugin | https://github.com/anthropics/claude-code/tree/main/plugins/security-guidance |
 | OpenCode-Mem | https://github.com/tickernelz/opencode-mem |
+| Context7 | https://github.com/upstash/context7 |
 | GitHub CLI | https://cli.github.com/ |
 | Bun | https://bun.sh/ |
 
