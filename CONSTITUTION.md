@@ -156,40 +156,94 @@ Examples of violations:
 
 # 4. Behavioral Rules for the Agent
 
-## 4.1 Decision Making
-The agent MUST:
-- state assumptions explicitly before implementing; stop and ask when uncertain
-- present multiple interpretations when they exist — never choose silently
-- prefer simple solutions over complex ones
-- justify non-trivial decisions
-- push back when a simpler approach exists before implementing the complex one
+## 4.1 Think Before Coding
 
-The agent MUST NOT:
-- make assumptions not present in requirements
-- proceed past confusion — name what is unclear and ask
+**Don't assume. Don't hide confusion. Surface tradeoffs.**
+
+Before implementing:
+- State your assumptions explicitly. If uncertain, ask.
+- If multiple interpretations exist, present them - don't pick silently.
+- If a simpler approach exists, say so. Push back when warranted.
+- If something is unclear, stop. Name what's confusing. Ask.
 
 ---
 
-## 4.2 Implementation Discipline
+## 4.2 Simplicity First
+
+**Minimum code that solves the problem. Nothing speculative.**
+
+- No features beyond what was asked.
+- No abstractions for single-use code.
+- No "flexibility" or "configurability" that wasn't requested.
+- No error handling for impossible scenarios.
+- If you write 200 lines and it could be 50, rewrite it.
+
+Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
+
+---
+
+## 4.3 Surgical Changes
+
+**Touch only what you must. Clean up only your own mess.**
+
+When editing existing code:
+- Don't "improve" adjacent code, comments, or formatting.
+- Don't refactor things that aren't broken.
+- Match existing style, even if you'd do it differently.
+- If you notice unrelated dead code, mention it - don't delete it.
+
+When your changes create orphans:
+- Remove imports/variables/functions that YOUR changes made unused.
+- Don't remove pre-existing dead code unless asked.
+
+The test: Every changed line should trace directly to the user's request.
+
+---
+
+## 4.4 Goal-Driven Execution
+
+**Define success criteria. Loop until verified.**
+
+Transform tasks into verifiable goals:
+- "Add validation" → "Write tests for invalid inputs, then make them pass"
+- "Fix the bug" → "Write a test that reproduces it, then make it pass"
+- "Refactor X" → "Ensure tests pass before and after"
+
+For multi-step tasks, state a brief plan:
+
+```
+1. [Step] → verify: [check]
+2. [Step] → verify: [check]
+3. [Step] → verify: [check]
+```
+
+Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
+
+---
+
+## 4.5 Additional Behavioral Rules
+
+The agent MUST:
+- justify non-trivial decisions
+
 The agent MUST NOT:
+- make assumptions not present in requirements
 - create unused code
 - leave incomplete implementations
 - ignore error handling at system boundaries (user input, external APIs)
-- add error handling for scenarios that cannot happen
 - introduce hidden side effects
 - modify code adjacent to the change unless directly required by the task
-- delete pre-existing dead code without being asked — mention it instead
 - deviate from the existing code style
 
 When the agent's own changes create orphaned imports, variables, or functions, the agent MUST remove them.
 
 ---
 
-## 4.3 Testing Discipline
+## 4.6 Testing Discipline
 - Every feature MUST be testable
 - The agent MUST transform tasks into verifiable goals before writing code:
-  - "Fix the bug" → write a test that reproduces it, then make it pass
-  - "Add validation" → write tests for invalid inputs, then make them pass
+  - "Fix the bug" -> write a test that reproduces it, then make it pass
+  - "Add validation" -> write tests for invalid inputs, then make them pass
 - For multi-step tasks, the agent MUST state a brief plan with a verify step per stage
 - Tests MUST:
   - be deterministic

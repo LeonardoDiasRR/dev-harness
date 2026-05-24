@@ -52,7 +52,7 @@ Non-compliance invalidates any output generated.
 
 ---
 
-## 2. Plugins, Tools, and Skills
+## 2. Plugins, Tools, Skills and MCPs
 
 All items in this section are **environment-agnostic** — they work in Claude Code, Codex, Cursor, OpenCode, Gemini CLI, Copilot, Windsurf, Cline, and other AI coding tools. Installation commands shown follow each tool's own conventions; adapt the syntax to your environment as needed.
 
@@ -117,29 +117,42 @@ Describe the interface you want to build using prompts such as:
 
 ---
 
-### 2.3 Agent Browser — Browser Automation for AI Agents
+### 2.3 Playwright MCP — Browser Automation via Model Context Protocol
 
-**Type:** Plugin / tool  
-**Repository:** https://github.com/vercel-labs/agent-browser/tree/main
+**Type:** MCP server  
+**Repository:** https://github.com/microsoft/playwright-mcp/tree/main
 
-A browser automation tool that enables AI agents to navigate pages, interact with web interfaces, and perform browser-based workflows for testing, research, and task execution.
+An MCP server maintained by Microsoft that gives AI agents browser automation capabilities through Playwright, enabling page navigation, interaction, inspection, and end-to-end workflow validation from MCP-compatible coding environments.
 
 #### Installation
 
-Follow the installation and setup instructions in the repository:
+Install or register the MCP server according to your environment's MCP configuration format. The server can be run directly with `npx`:
 
+```bash
+npx @playwright/mcp@latest
 ```
-https://github.com/vercel-labs/agent-browser/tree/main
+
+Example MCP server configuration:
+
+```json
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
+    }
+  }
+}
 ```
 
 #### Typical usage
 
-Use it when your workflow requires actions such as:
+Use it when your workflow requires browser-based actions such as:
 
 ```
-"Open the app in a browser and validate the main flow"
-"Navigate through a signup form and inspect UI behavior"
-"Use browser automation to verify a dashboard interaction"
+"Open the app and verify the signup flow"
+"Inspect this page and identify accessibility issues"
+"Click through the dashboard and validate the main user journey"
 ```
 
 ---
@@ -240,44 +253,6 @@ This guidance is typically applied automatically during implementation and revie
 
 A persistent memory system for AI coding workflows that enables long-term context retention across sessions using a local vector database. It includes automatic user profile learning, smart deduplication, and semantic recall.
 
----
-
-### 2.8 RTK — CLI Proxy for LLM Token Optimization
-
-**Type:** CLI tool / proxy  
-**Repository:** https://github.com/rtk-ai/rtk
-
-A high-performance CLI proxy that intercepts and filters command output before it reaches the LLM context, reducing token consumption by 60–90% on common dev commands (`git`, `cat`, `grep`, `cargo test`, `pytest`, etc.). Single Rust binary, zero dependencies, <10ms overhead.
-
-#### Installation
-
-**Homebrew (macOS/Linux):**
-```bash
-brew install rtk
-```
-
-**Quick install (Linux/macOS):**
-```bash
-curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
-```
-
-**Cargo:**
-```bash
-cargo install --git https://github.com/rtk-ai/rtk
-```
-
-**Windows:** Download the zip from [releases](https://github.com/rtk-ai/rtk/releases), extract `rtk.exe` to a directory in your PATH.
-
-#### Quick start
-
-```bash
-rtk init -g              # Install hook for Claude Code / Copilot
-rtk init -g --opencode   # OpenCode plugin
-rtk gain                 # Show token savings stats
-```
-
-After installing, restart your AI tool. The hook automatically rewrites Bash commands (e.g. `git status` → `rtk git status`), delivering compact output without manual intervention.
-
 #### Prerequisites
 
 - [Bun](https://bun.sh/) (recommended runtime)
@@ -336,6 +311,46 @@ Access the web UI at `http://127.0.0.1:4747` for visual memory browsing and mana
 
 ---
 
+---
+
+### 2.8 RTK — CLI Proxy for LLM Token Optimization
+
+**Type:** CLI tool / proxy  
+**Repository:** https://github.com/rtk-ai/rtk
+
+A high-performance CLI proxy that intercepts and filters command output before it reaches the LLM context, reducing token consumption by 60–90% on common dev commands (`git`, `cat`, `grep`, `cargo test`, `pytest`, etc.). Single Rust binary, zero dependencies, <10ms overhead.
+
+#### Installation
+
+**Homebrew (macOS/Linux):**
+```bash
+brew install rtk
+```
+
+**Quick install (Linux/macOS):**
+```bash
+curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
+```
+
+**Cargo:**
+```bash
+cargo install --git https://github.com/rtk-ai/rtk
+```
+
+**Windows:** Download the zip from [releases](https://github.com/rtk-ai/rtk/releases), extract `rtk.exe` to a directory in your PATH.
+
+#### Quick start
+
+```bash
+rtk init -g              # Install hook for Claude Code / Copilot
+rtk init -g --opencode   # OpenCode plugin
+rtk gain                 # Show token savings stats
+```
+
+After installing, restart your AI tool. The hook automatically rewrites Bash commands (e.g. `git status` → `rtk git status`), delivering compact output without manual intervention.
+
+---
+
 ### 2.9 Context7 — Up-to-Date Code Documentation for LLMs
 
 **Type:** MCP server / CLI + Skills  
@@ -384,7 +399,7 @@ Use the server URL `https://mcp.context7.com/mcp` and pass your API key via the 
 
 #### Typical usage
 
-Add a `use context7` or `use context7` instruction to your prompts:
+Add a `use context7` instruction to your prompts:
 
 ```adblock
 Create a Next.js middleware that checks for a valid JWT in cookies
@@ -421,7 +436,7 @@ If globally installed via `npm install -g ctx7`, uninstall separately: `npm unin
 ```
 [ ] Copy CONSTITUTION.md to the project root
 [ ] Add the CONSTITUTION.md read instruction to your project instructions mechanism
-[ ] Install the plugins, tools, and skills you want to use (see section 2)
+[ ] Install the plugins, tools, skills, and MCPs you want to use (see section 2)
 ```
 
 ### Suggested stack
@@ -429,7 +444,7 @@ If globally installed via `npm install -g ctx7`, uninstall separately: `npm unin
 ```
 [ ] Install Superpowers (spec-driven development + TDD)
 [ ] Install @nextlevelbuilder/ui-ux-pro-max-skill (if the project has a UI)
-[ ] Install Agent Browser (if the project needs browser automation or web interaction testing)
+[ ] Install Playwright MCP (if the project needs browser automation through MCP)
 [ ] Install Supabase Postgres Best Practices (if the project uses Supabase or Postgres)
 [ ] Install Code Review (requires authenticated gh CLI)
 [ ] Install Security Guidance
@@ -445,12 +460,12 @@ If globally installed via `npm install -g ctx7`, uninstall separately: `npm unin
 |----------|------|
 | Superpowers | https://github.com/obra/superpowers |
 | UI UX Pro Max Skill | https://github.com/nextlevelbuilder/ui-ux-pro-max-skill |
-| Agent Browser | https://github.com/vercel-labs/agent-browser/tree/main |
 | Supabase Postgres Best Practices | https://github.com/supabase/agent-skills/tree/3e7771598f3a03d29533208dd7b5a50bdfc8860f/skills/supabase-postgres-best-practices |
 | Code Review Plugin | https://github.com/anthropics/claude-code/blob/main/plugins/code-review/README.md |
 | Security Guidance Plugin | https://github.com/anthropics/claude-code/tree/main/plugins/security-guidance |
 | OpenCode-Mem | https://github.com/tickernelz/opencode-mem |
 | Context7 | https://github.com/upstash/context7 |
+| Playwright MCP | https://github.com/microsoft/playwright-mcp/tree/main |
 | GitHub CLI | https://cli.github.com/ |
 | Bun | https://bun.sh/ |
 
