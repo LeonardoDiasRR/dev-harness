@@ -117,29 +117,42 @@ Describe the interface you want to build using prompts such as:
 
 ---
 
-### 2.3 Agent Browser — Browser Automation for AI Agents
+### 2.3 Playwright MCP — Browser Automation via Model Context Protocol
 
-**Type:** Plugin / tool  
-**Repository:** https://github.com/vercel-labs/agent-browser/tree/main
+**Type:** MCP server  
+**Repository:** https://github.com/microsoft/playwright-mcp/tree/main
 
-A browser automation tool that enables AI agents to navigate pages, interact with web interfaces, and perform browser-based workflows for testing, research, and task execution.
+An MCP server maintained by Microsoft that gives AI agents browser automation capabilities through Playwright, enabling page navigation, interaction, inspection, and end-to-end workflow validation from MCP-compatible coding environments.
 
 #### Installation
 
-Follow the installation and setup instructions in the repository:
+Install or register the MCP server according to your environment's MCP configuration format. The server can be run directly with `npx`:
 
+```bash
+npx @playwright/mcp@latest
 ```
-https://github.com/vercel-labs/agent-browser/tree/main
+
+Example MCP server configuration:
+
+```json
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
+    }
+  }
+}
 ```
 
 #### Typical usage
 
-Use it when your workflow requires actions such as:
+Use it when your workflow requires browser-based actions such as:
 
 ```
-"Open the app in a browser and validate the main flow"
-"Navigate through a signup form and inspect UI behavior"
-"Use browser automation to verify a dashboard interaction"
+"Open the app and verify the signup flow"
+"Inspect this page and identify accessibility issues"
+"Click through the dashboard and validate the main user journey"
 ```
 
 ---
@@ -298,6 +311,8 @@ Access the web UI at `http://127.0.0.1:4747` for visual memory browsing and mana
 
 ---
 
+---
+
 ### 2.8 RTK — CLI Proxy for LLM Token Optimization
 
 **Type:** CLI tool / proxy  
@@ -336,43 +351,83 @@ After installing, restart your AI tool. The hook automatically rewrites Bash com
 
 ---
 
-### 2.9 Playwright MCP — Browser Automation via Model Context Protocol
+### 2.9 Context7 — Up-to-Date Code Documentation for LLMs
 
-**Type:** MCP server  
-**Repository:** https://github.com/microsoft/playwright-mcp/tree/main
+**Type:** MCP server / CLI + Skills  
+**Repository:** https://github.com/upstash/context7  
+**Website:** https://context7.com
 
-An MCP server maintained by Microsoft that gives AI agents browser automation capabilities through Playwright, enabling page navigation, interaction, inspection, and end-to-end workflow validation from MCP-compatible coding environments.
+Context7 provides **up-to-date, version-specific** documentation and code examples straight from the source into your AI agent's prompt. It solves three common problems: outdated code examples from old training data, hallucinated APIs that don't exist, and generic answers for old package versions.
 
-#### Installation
+It works in **two modes**:
 
-Install or register the MCP server according to your environment's MCP configuration format. The server can be run directly with `npx`:
+| Mode | Description |
+|------|-------------|
+| **CLI + Skills** | Installs a skill that guides your agent to fetch docs using `ctx7` CLI commands (no MCP required) |
+| **MCP** | Registers a Context7 MCP server so your agent can call documentation tools natively |
 
-```bash
-npx @playwright/mcp@latest
+#### Installation (quick setup)
+
+```shell
+npx ctx7 setup
 ```
 
-Example MCP server configuration:
+- Authenticates via OAuth, generates an API key, installs the skill
+- Choose between **CLI + Skills** or **MCP** mode during setup
+- Use `--cursor`, `--claude`, or `--opencode` to target a specific agent
 
-```json
-{
-  "mcpServers": {
-    "playwright": {
-      "command": "npx",
-      "args": ["@playwright/mcp@latest"]
-    }
-  }
-}
-```
+#### Manual MCP configuration (for other MCP clients)
+
+Use the server URL `https://mcp.context7.com/mcp` and pass your API key via the `CONTEXT7_API_KEY` header.  
+[Full client-specific setup guide →](https://context7.com/docs/resources/all-clients)
+
+#### Available tools
+
+**CLI Commands:**
+
+| Command | Description |
+|---------|-------------|
+| `ctx7 library <name> <query>` | Searches the Context7 index by library name and returns matching libraries with their IDs |
+| `ctx7 docs <libraryId> <query>` | Retrieves documentation for a library (e.g., `/mongodb/docs`, `/vercel/next.js`) |
+
+**MCP Tools:**
+
+| Tool | Parameters | Description |
+|------|------------|-------------|
+| `resolve-library-id` | `query`, `libraryName` | Resolves a general library name into a Context7-compatible library ID |
+| `query-docs` | `libraryId`, `query` | Retrieves documentation for a specific library |
 
 #### Typical usage
 
-Use it when your workflow requires browser-based actions such as:
+Add a `use context7` instruction to your prompts:
+
+```adblock
+Create a Next.js middleware that checks for a valid JWT in cookies
+and redirects unauthenticated users to `/login`. use context7
+```
+
+```adblock
+Configure a Cloudflare Worker script to cache
+JSON API responses for five minutes. use context7
+```
+
+#### Important tips
+
+- **Specify a library ID:** Use `use library /supabase/supabase` to skip library-matching
+- **Specify a version:** E.g., "How do I set up Next.js 14 middleware?" — Context7 automatically matches the appropriate version
+- **Add a rule:** For automatic trigger without explicit `use context7`, add a rule to your environment's instructions file (e.g., `CLAUDE.md`, `.cursorrules`)
 
 ```
-"Open the app and verify the signup flow"
-"Inspect this page and identify accessibility issues"
-"Click through the dashboard and validate the main user journey"
+Always use Context7 when I need library/API documentation, code generation, setup or configuration steps without me having to explicitly ask.
 ```
+
+#### Removal
+
+```shell
+npx ctx7 remove
+```
+
+If globally installed via `npm install -g ctx7`, uninstall separately: `npm uninstall -g ctx7`.
 
 ---
 
@@ -389,12 +444,12 @@ Use it when your workflow requires browser-based actions such as:
 ```
 [ ] Install Superpowers (spec-driven development + TDD)
 [ ] Install @nextlevelbuilder/ui-ux-pro-max-skill (if the project has a UI)
-[ ] Install Agent Browser (if the project needs browser automation or web interaction testing)
+[ ] Install Playwright MCP (if the project needs browser automation through MCP)
 [ ] Install Supabase Postgres Best Practices (if the project uses Supabase or Postgres)
 [ ] Install Code Review (requires authenticated gh CLI)
 [ ] Install Security Guidance
 [ ] Install OpenCode-Mem (cross-session memory)
-[ ] Install Playwright MCP (if the project needs browser automation through MCP)
+[ ] Install Context7 (up-to-date library/API documentation for LLMs)
 ```
 
 ---
@@ -405,11 +460,11 @@ Use it when your workflow requires browser-based actions such as:
 |----------|------|
 | Superpowers | https://github.com/obra/superpowers |
 | UI UX Pro Max Skill | https://github.com/nextlevelbuilder/ui-ux-pro-max-skill |
-| Agent Browser | https://github.com/vercel-labs/agent-browser/tree/main |
 | Supabase Postgres Best Practices | https://github.com/supabase/agent-skills/tree/3e7771598f3a03d29533208dd7b5a50bdfc8860f/skills/supabase-postgres-best-practices |
 | Code Review Plugin | https://github.com/anthropics/claude-code/blob/main/plugins/code-review/README.md |
 | Security Guidance Plugin | https://github.com/anthropics/claude-code/tree/main/plugins/security-guidance |
 | OpenCode-Mem | https://github.com/tickernelz/opencode-mem |
+| Context7 | https://github.com/upstash/context7 |
 | Playwright MCP | https://github.com/microsoft/playwright-mcp/tree/main |
 | GitHub CLI | https://cli.github.com/ |
 | Bun | https://bun.sh/ |

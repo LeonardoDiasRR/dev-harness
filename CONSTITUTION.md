@@ -154,7 +154,7 @@ Examples of violations:
 
 ---
 
-# 4. Behavioral Rules for the Agent
+# 4. Karpathy Behavioral Rules for the Agent
 
 ## 4.1 Think Before Coding
 
