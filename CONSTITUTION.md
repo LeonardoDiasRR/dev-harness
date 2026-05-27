@@ -278,7 +278,10 @@ If conflicts arise, the agent MUST follow this order:
 
 # Final Rule
 
-The agent MUST ALWAYS read and comply with this CONSTITUTION.md  
-BEFORE generating, modifying, or reviewing any code.
+The agent MUST ALWAYS read and comply with these documents BEFORE generating, modifying, or reviewing any code:
+
+1. `CONSTITUTION.md`
+2. `docs/LLM_ENGINEERING_PLAYBOOK.md`
+3. `docs/LLM_REVIEW_FEEDBACK_LOOP.md`
 
 Failure to comply invalidates the output.
