@@ -1,6 +1,6 @@
 # Coding Harness — Setup Guide
 
-This guide describes how to assemble a development harness for AI coding workflows, composed of plugins, tools, and skills covering spec-driven development, frontend design, browser automation, database best practices, code review, security, and persistent memory.
+This guide describes how to assemble a development harness for AI coding workflows, composed of plugins, tools, and skills covering spec-driven development, frontend design, browser automation, database best practices, security, and persistent memory.
 
 The harness is **agent-agnostic**: every plugin, tool, skill, and the core `CONSTITUTION.md` work with any assistant, CLI, editor integration, or coding environment — Claude Code, Codex, Cursor, OpenCode, Gemini CLI, Copilot, Windsurf, Cline, and others.
 
@@ -9,7 +9,7 @@ The harness is **agent-agnostic**: every plugin, tool, skill, and the core `CONS
 ## Prerequisites
 
 - An AI coding environment (for example: CLI assistants, editor integrations, or agent-based coding tools)
-- [GitHub CLI](https://cli.github.com/) (`gh`) installed and authenticated (required for the code review workflow)
+- [GitHub CLI](https://cli.github.com/) (`gh`) installed and authenticated
 - Git
 
 ---
@@ -184,50 +184,7 @@ Use this skill when your workflow involves tasks such as:
 
 ---
 
-### 2.5 Code Review — Automated Pull Request Review
-
-**Type:** Plugin  
-**Repository:** https://github.com/anthropics/claude-code/blob/main/plugins/code-review/README.md
-
-A pull request review plugin that runs multiple review passes in parallel to audit guideline compliance, bugs, and git history, while using confidence scoring to reduce false positives.
-
-#### Installation
-
-```
-/plugin install code-review@claude-plugins-official
-```
-
-#### Additional requirements
-
-```bash
-# macOS
-brew install gh
-
-# Authenticate
-gh auth login
-```
-
-#### Typical usage
-
-```
-# Local review (output to terminal):
-/code-review
-
-# Post review as a PR comment:
-/code-review --comment
-```
-
-The review flow automatically skips closed, draft, trivial, or already-reviewed pull requests. Only issues with confidence ≥ 80 are reported.
-
-#### Best practices
-
-- Keep clear project instruction files in the repository so the review workflow can verify guideline compliance
-- Run reviews on all pull requests with meaningful changes
-- Update project instructions based on recurring patterns identified in reviews
-
----
-
-### 2.6 Security Guidance — Secure Code Generation
+### 2.5 Security Guidance — Secure Code Generation
 
 **Type:** Plugin / guidance  
 **Repository:** https://github.com/anthropics/claude-code/tree/main/plugins/security-guidance
@@ -246,7 +203,7 @@ This guidance is typically applied automatically during implementation and revie
 
 ---
 
-### 2.7 OpenCode-Mem — Persistent Cross-Session Memory
+### 2.6 OpenCode-Mem — Persistent Cross-Session Memory
 
 **Type:** Plugin / memory system  
 **Repository:** https://github.com/tickernelz/opencode-mem
@@ -313,7 +270,7 @@ Access the web UI at `http://127.0.0.1:4747` for visual memory browsing and mana
 
 ---
 
-### 2.8 RTK — CLI Proxy for LLM Token Optimization
+### 2.7 RTK — CLI Proxy for LLM Token Optimization
 
 **Type:** CLI tool / proxy  
 **Repository:** https://github.com/rtk-ai/rtk
@@ -351,7 +308,7 @@ After installing, restart your AI tool. The hook automatically rewrites Bash com
 
 ---
 
-### 2.9 Context7 — Up-to-Date Code Documentation for LLMs
+### 2.8 Context7 — Up-to-Date Code Documentation for LLMs
 
 **Type:** MCP server / CLI + Skills  
 **Repository:** https://github.com/upstash/context7  
@@ -446,7 +403,6 @@ If globally installed via `npm install -g ctx7`, uninstall separately: `npm unin
 [ ] Install @nextlevelbuilder/ui-ux-pro-max-skill (if the project has a UI)
 [ ] Install Playwright MCP (if the project needs browser automation through MCP)
 [ ] Install Supabase Postgres Best Practices (if the project uses Supabase or Postgres)
-[ ] Install Code Review (requires authenticated gh CLI)
 [ ] Install Security Guidance
 [ ] Install OpenCode-Mem (cross-session memory)
 [ ] Install Context7 (up-to-date library/API documentation for LLMs)
@@ -461,7 +417,6 @@ If globally installed via `npm install -g ctx7`, uninstall separately: `npm unin
 | Superpowers | https://github.com/obra/superpowers |
 | UI UX Pro Max Skill | https://github.com/nextlevelbuilder/ui-ux-pro-max-skill |
 | Supabase Postgres Best Practices | https://github.com/supabase/agent-skills/tree/3e7771598f3a03d29533208dd7b5a50bdfc8860f/skills/supabase-postgres-best-practices |
-| Code Review Plugin | https://github.com/anthropics/claude-code/blob/main/plugins/code-review/README.md |
 | Security Guidance Plugin | https://github.com/anthropics/claude-code/tree/main/plugins/security-guidance |
 | OpenCode-Mem | https://github.com/tickernelz/opencode-mem |
 | Context7 | https://github.com/upstash/context7 |
