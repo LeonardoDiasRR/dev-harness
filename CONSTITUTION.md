@@ -129,6 +129,26 @@ The agent MUST follow this structure:
 
 ---
 
+## 2.6 Component Reuse (Shared-First)
+
+Before creating a new UI component, the agent MUST follow this order:
+
+1. **Check for an existing shared component**
+   - Search `src/shared/ui` (or the project's shared UI folder).
+   - If an equivalent component already exists, the agent MUST reuse it.
+
+2. **If not found, check if a feature component can be shared**
+   - Search across `src/features/**/components` for a component that serves the same purpose.
+   - If a suitable component exists and is not feature-specific, the agent MUST:
+     - move it into `src/shared/ui`
+     - update imports/usages accordingly
+     - add/adjust tests so behavior remains covered
+
+3. **Only then create a feature-specific component**
+   - The agent MUST create a new component inside a feature ONLY if the component is truly feature-specific and cannot be generalized without adding unnecessary complexity.
+
+---
+
 # 3. Context Optimization Rules (LLM-Specific)
 
 ## 3.1 Context Efficiency
@@ -273,5 +293,3 @@ If conflicts arise, the agent MUST follow this order:
 3. Separation of Concerns
 4. DRY
 5. Architecture Rules
-
----
