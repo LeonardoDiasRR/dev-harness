@@ -8,187 +8,194 @@ The agent MUST always prioritize:
 
 ---
 
-# 1. Core Coding Principles
+# FRONTEND
 
-## 1.1 DRY (Don't Repeat Yourself)
+## F1. DRY (Don't Repeat Yourself)
 - The agent MUST avoid code duplication at all costs.
-- Any repeated logic, value, or structure MUST be abstracted into:
-  - variables
-  - functions
-  - modules
-- Rationale:
-  - Reduces token usage
-  - Prevents inconsistency
-  - Avoids context loss within LLM window
+- Any repeated logic, value, or structure MUST be abstracted into variables, functions, or modules.
+- Rationale: reduces token usage, prevents inconsistency, avoids context loss within LLM window.
 
 ---
 
-## 1.2 KISS (Keep It Simple, Stupid)
+## F2. KISS (Keep It Simple, Stupid)
 - The agent MUST always choose the simplest possible implementation.
 - The agent MUST NOT introduce unnecessary abstractions or complexity.
-- Prefer:
-  - small files (≤ 150–300 lines)
-  - direct and readable logic
+- Prefer small files (≤ 150–300 lines) with direct and readable logic.
 - The agent MUST avoid overengineering.
 
 ---
 
-## 1.3 YAGNI (You Aren't Gonna Need It)
-- The agent MUST NOT implement:
-  - speculative features
-  - unnecessary edge cases
-  - premature optimizations
+## F3. YAGNI (You Aren't Gonna Need It)
+- The agent MUST NOT implement speculative features, unnecessary edge cases, or premature optimizations.
 - Only implement what is explicitly required.
 
 ---
 
-## 1.4 TDD (Test-Driven Development)
-- The agent MUST:
-  - write tests before OR alongside implementation
-- Every feature MUST include:
-  - unit tests
-  - deterministic assertions
+## F4. TDD (Test-Driven Development)
+- The agent MUST write tests before OR alongside implementation.
+- Every feature MUST include unit tests with deterministic assertions.
 - Code WITHOUT tests is considered INCOMPLETE.
 
 ---
 
-## 1.5 Separation of Concerns
+## F5. Separation of Concerns
 - Each file MUST have a single responsibility.
-- The agent MUST NOT mix:
-  - UI logic with business logic
-  - configuration with domain logic
-- Violations cause:
-  - Context Poisoning
-  - Increased hallucination risk
-  - Reduced maintainability
+- The agent MUST NOT mix UI logic with business logic, or configuration with domain logic.
+- Violations cause context poisoning, increased hallucination risk, and reduced maintainability.
 
 ---
 
-# 2. Architectural Principles
+## F6. Feature-Based Architecture
 
-## 2.1 Mandatory Architecture: Feature-Based
+The agent MUST organize frontend projects using **Feature-Based Architecture**.
 
-The agent MUST organize the project using **Feature-Based Architecture**.
+### Why Feature-Based Architecture Is Mandatory
 
----
-
-## 2.2 Why This Is Mandatory
-
-Layer-based architecture:
-- Forces the agent to scan many irrelevant files
-- Increases token usage
-- Causes inefficient reasoning
-
-Feature-based architecture:
+Layer-based architecture forces the agent to scan many irrelevant files, increases token usage, and causes inefficient reasoning. Feature-based architecture:
 - Reduces context size
 - Improves reasoning accuracy
 - Prevents context poisoning
 - Enables isolated feature development
 
----
-
-## 2.3 Required Project Structure
-
-The agent MUST follow this structure:
+### Required Frontend Structure
 
     src/
-    ├── features/
-    │   ├── <feature-name>/
-    │   │   ├── components/
-    │   │   ├── hooks/
-    │   │   ├── services/
-    │   │   ├── store/
-    │   │   ├── types/
-    │   │   └── tests/
+    ├── features/                   # One directory per business feature
+    │   └── <feature-name>/
+    │       ├── components/         # UI components scoped to this feature
+    │       ├── hooks/              # Feature-specific React hooks
+    │       ├── services/           # API calls and business logic
+    │       ├── store/              # Local state (Zustand slice, Redux slice…)
+    │       ├── types/              # TypeScript types/interfaces for this feature
+    │       └── tests/              # Unit and integration tests
     │
-    └── shared/
-        ├── ui/
-        ├── utils/
-        └── constants/
+    └── shared/                     # Truly reusable, feature-agnostic code
+        ├── ui/                     # UI kit: buttons, inputs, modals, layout primitives
+        ├── utils/                  # Generic utility functions and helpers
+        └── constants/              # App-wide constants and configuration values
 
----
+### Feature-Based Rules
+- Each feature MUST be self-contained: components, hooks, services, types, state, and tests.
+- A feature MUST NOT import from another feature — extract shared logic into `shared/`.
+- The `shared/` directory MUST contain ONLY reusable UI components and generic utilities; no business logic.
 
-## 2.4 Feature Encapsulation Rule
-
-- Each feature MUST be self-contained.
-- A feature MUST include:
-  - UI (components)
-  - Logic (hooks/services)
-  - Types
-  - State (if applicable)
-  - Tests
-
----
-
-## 2.5 Shared Layer Constraints
-
-- The `shared/` directory MUST contain ONLY:
-  - reusable UI components
-  - generic utilities
-- The agent MUST NOT place business logic in `shared/`.
-
----
-
-## 2.6 Component Reuse (Shared-First)
+### Component Reuse (Shared-First)
 
 Before creating a new UI component, the agent MUST follow this order:
 
-1. **Check for an existing shared component**
-   - Search `src/shared/ui` (or the project's shared UI folder).
-   - If an equivalent component already exists, the agent MUST reuse it.
-
-2. **If not found, check if a feature component can be shared**
-   - Search across `src/features/**/components` for a component that serves the same purpose.
-   - If a suitable component exists and is not feature-specific, the agent MUST:
-     - move it into `src/shared/ui`
-     - update imports/usages accordingly
-     - add/adjust tests so behavior remains covered
-
-3. **Only then create a feature-specific component**
-   - The agent MUST create a new component inside a feature ONLY if the component is truly feature-specific and cannot be generalized without adding unnecessary complexity.
+1. **Check `shared/ui`** — if an equivalent component exists, reuse it.
+2. **Check across `features/**/components`** — if a suitable component exists and is not feature-specific, move it to `shared/ui`, update imports, and adjust tests.
+3. **Only then create a new feature-scoped component** — only if it is truly specific to that feature.
 
 ---
 
-# 3. Context Optimization Rules (LLM-Specific)
+# BACKEND
 
-## 3.1 Context Efficiency
-- The agent MUST minimize the number of files required to solve a task.
-- The agent SHOULD operate within a single feature whenever possible.
-
----
-
-## 3.2 Context Poisoning Prevention
-The agent MUST avoid introducing unrelated logic into files.
-
-Examples of violations:
-- Mixing authentication logic inside sales modules
-- Adding global state unnecessarily
-- Placing unrelated types together
+## B1. DDD — Domain-Driven Design
+- The agent MUST model the solution around the business domain, not the data schema.
+- Core concepts: **Entities**, **Value Objects**, **Aggregates**, **Domain Services**, **Repositories** (interfaces only in domain), **Domain Events**.
+- The domain layer MUST be free of framework dependencies.
+- Business rules live exclusively in the domain layer.
 
 ---
 
-## 3.3 File Size Control
-- Files SHOULD remain small and focused.
-- If a file exceeds reasonable size:
-  - it MUST be split by responsibility
+## B2. SOLID
+- **S** — Single Responsibility: each class has one reason to change.
+- **O** — Open/Closed: open for extension, closed for modification.
+- **L** — Liskov Substitution: subtypes must be substitutable for their base types.
+- **I** — Interface Segregation: clients must not depend on interfaces they do not use.
+- **D** — Dependency Inversion: depend on abstractions, not concretions.
 
 ---
 
-# 4. Karpathy Behavioral Rules for the Agent
+## B3. Clean Architecture
+- Dependencies MUST point inward: `Presentation → Application → Domain ← Infrastructure`.
+- The domain layer MUST have zero external dependencies.
+- Infrastructure details (DB, HTTP, messaging) are injected via interfaces defined in the domain/application layer.
+- Use Cases (application layer) orchestrate domain objects and define ports (interfaces) for external services.
 
-## 4.1 Think Before Coding
+---
+
+## B4. TDD (Test-Driven Development)
+- The agent MUST write tests before OR alongside implementation.
+- Domain logic MUST be unit-tested in isolation (no DB, no HTTP).
+- Use cases MUST be tested with mocked ports.
+- Infrastructure adapters MUST be integration-tested.
+- Code WITHOUT tests is considered INCOMPLETE.
+
+---
+
+## B5. DRY — Don't Repeat Yourself
+- Any repeated logic MUST be abstracted into a domain service, value object, or utility.
+- The agent MUST NOT duplicate validation rules, business invariants, or mapping logic.
+
+---
+
+## B6. KISS — Keep It Simple, Stupid
+- The agent MUST choose the simplest design that satisfies the requirement.
+- The agent MUST NOT introduce patterns (CQRS, Event Sourcing, Sagas) unless the requirement explicitly demands them.
+
+---
+
+## B7. YAGNI — You Aren't Gonna Need It
+- The agent MUST NOT implement speculative use cases, unused abstractions, or premature generalizations.
+- Only implement what is explicitly required.
+
+---
+
+## B8. Required Backend Structure
+
+    src/
+    ├── domain/                     # Enterprise business rules — zero external dependencies
+    │   ├── entities/               # Aggregates & Entities with identity
+    │   ├── value-objects/          # Immutable domain concepts (Email, Money, CPF…)
+    │   ├── events/                 # Domain Events
+    │   ├── exceptions/             # Domain-specific exceptions
+    │   ├── repositories/           # Repository interfaces (contracts only)
+    │   └── services/               # Domain Services (logic spanning multiple aggregates)
+    │
+    ├── application/                # Application business rules — orchestrates domain
+    │   ├── use-cases/              # One class per use case
+    │   ├── dtos/                   # Input/Output data transfer objects
+    │   ├── ports/                  # Interfaces for external services (email, storage…)
+    │   └── mappers/                # Domain ↔ DTO transformations
+    │
+    ├── infrastructure/             # Frameworks & drivers — implements domain interfaces
+    │   ├── persistence/            # Repository implementations, ORM models, migrations
+    │   ├── messaging/              # Event bus, queue adapters
+    │   ├── external/               # Third-party API clients
+    │   └── config/                 # Env vars, DI container wiring
+    │
+    └── presentation/               # Delivery mechanism — HTTP, CLI, gRPC…
+        ├── http/
+        │   ├── controllers/        # Thin: validate input → call use case → serialize output
+        │   ├── middlewares/
+        │   └── routes/
+        └── cli/                    # Optional: CLI commands
+
+### Backend Layer Rules
+- `domain/` MUST NOT import from `application/`, `infrastructure/`, or `presentation/`.
+- `application/` MUST NOT import from `infrastructure/` or `presentation/`.
+- `infrastructure/` and `presentation/` implement interfaces defined in inner layers.
+- Controllers MUST be thin: no business logic, no direct repository access.
+
+---
+
+# SHARED BEHAVIORAL RULES
+
+## S1. Think Before Coding
 
 **Don't assume. Don't hide confusion. Surface tradeoffs.**
 
 Before implementing:
 - State your assumptions explicitly. If uncertain, ask.
-- If multiple interpretations exist, present them - don't pick silently.
+- If multiple interpretations exist, present them — don't pick silently.
 - If a simpler approach exists, say so. Push back when warranted.
 - If something is unclear, stop. Name what's confusing. Ask.
 
 ---
 
-## 4.2 Simplicity First
+## S2. Simplicity First
 
 **Minimum code that solves the problem. Nothing speculative.**
 
@@ -202,7 +209,7 @@ Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, sim
 
 ---
 
-## 4.3 Surgical Changes
+## S3. Surgical Changes
 
 **Touch only what you must. Clean up only your own mess.**
 
@@ -210,17 +217,17 @@ When editing existing code:
 - Don't "improve" adjacent code, comments, or formatting.
 - Don't refactor things that aren't broken.
 - Match existing style, even if you'd do it differently.
-- If you notice unrelated dead code, mention it - don't delete it.
+- If you notice unrelated dead code, mention it — don't delete it.
 
 When your changes create orphans:
 - Remove imports/variables/functions that YOUR changes made unused.
 - Don't remove pre-existing dead code unless asked.
 
-The test: Every changed line should trace directly to the user's request.
+The test: every changed line must trace directly to the user's request.
 
 ---
 
-## 4.4 Goal-Driven Execution
+## S4. Goal-Driven Execution
 
 **Define success criteria. Loop until verified.**
 
@@ -237,11 +244,9 @@ For multi-step tasks, state a brief plan:
 3. [Step] → verify: [check]
 ```
 
-Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
-
 ---
 
-## 4.5 Additional Behavioral Rules
+## S5. Additional Behavioral Rules
 
 The agent MUST:
 - justify non-trivial decisions
@@ -259,32 +264,19 @@ When the agent's own changes create orphaned imports, variables, or functions, t
 
 ---
 
-## 4.6 Testing Discipline
-- Every feature MUST be testable
-- The agent MUST transform tasks into verifiable goals before writing code:
-  - "Fix the bug" -> write a test that reproduces it, then make it pass
-  - "Add validation" -> write tests for invalid inputs, then make them pass
-- For multi-step tasks, the agent MUST state a brief plan with a verify step per stage
-- Tests MUST:
-  - be deterministic
-  - not depend on external state
-  - reflect real use cases
-
----
-
-# 5. Definition of Done
+# Definition of Done
 
 A task is ONLY considered complete if:
 
-- Code follows all principles (DRY, KISS, YAGNI)
-- Architecture follows Feature-Based structure
+- Code follows all applicable principles (DRY, KISS, YAGNI)
+- Architecture follows FSD (frontend) or Clean Architecture + DDD (backend)
 - No context poisoning is introduced
 - Tests are implemented and passing
 - Code is readable and maintainable
 
 ---
 
-# 6. Enforcement Priority
+# Enforcement Priority
 
 If conflicts arise, the agent MUST follow this order:
 
