@@ -52,6 +52,18 @@ Non-compliance invalidates any output generated.
 
 ---
 
+## Agent-Agnostic Software Development Prompt
+
+The canonical model- and platform-agnostic system prompt is available at [`prompts/agnostic-software-development-system.md`](prompts/agnostic-software-development-system.md). It describes software-engineering behavior and host integrations through abstract capability contracts, so environment-specific adapters can map their own tools without changing the behavioral core.
+
+Validate the prompt with:
+
+```bash
+python3 -m unittest tests/validate_agnostic_prompt.py -v
+```
+
+---
+
 ## 2. Plugins, Tools, Skills and MCPs
 
 All items in this section are **environment-agnostic** — they work in Claude Code, Codex, Cursor, OpenCode, Gemini CLI, Copilot, Windsurf, Cline, and other AI coding tools. Installation commands shown follow each tool's own conventions; adapt the syntax to your environment as needed.
