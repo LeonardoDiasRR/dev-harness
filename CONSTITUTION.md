@@ -8,8 +8,6 @@ The agent MUST always prioritize:
 
 ---
 
-# FRONTEND
-
 ## F1. DRY (Don't Repeat Yourself)
 - The agent MUST avoid code duplication at all costs.
 - Any repeated logic, value, or structure MUST be abstracted into variables, functions, or modules.
@@ -86,100 +84,6 @@ Before creating a new UI component, the agent MUST follow this order:
 1. **Check `shared/ui`** — if an equivalent component exists, reuse it.
 2. **Check across `features/**/components`** — if a suitable component exists and is not feature-specific, move it to `shared/ui`, update imports, and adjust tests.
 3. **Only then create a new feature-scoped component** — only if it is truly specific to that feature.
-
----
-
-# BACKEND
-
-## B1. DDD — Domain-Driven Design
-- The agent MUST model the solution around the business domain, not the data schema.
-- Core concepts: **Entities**, **Value Objects**, **Aggregates**, **Domain Services**, **Repositories** (interfaces only in domain), **Domain Events**.
-- The domain layer MUST be free of framework dependencies.
-- Business rules live exclusively in the domain layer.
-
----
-
-## B2. SOLID
-- **S** — Single Responsibility: each class has one reason to change.
-- **O** — Open/Closed: open for extension, closed for modification.
-- **L** — Liskov Substitution: subtypes must be substitutable for their base types.
-- **I** — Interface Segregation: clients must not depend on interfaces they do not use.
-- **D** — Dependency Inversion: depend on abstractions, not concretions.
-
----
-
-## B3. Clean Architecture
-- Dependencies MUST point inward: `Presentation → Application → Domain ← Infrastructure`.
-- The domain layer MUST have zero external dependencies.
-- Infrastructure details (DB, HTTP, messaging) are injected via interfaces defined in the domain/application layer.
-- Use Cases (application layer) orchestrate domain objects and define ports (interfaces) for external services.
-
----
-
-## B4. TDD (Test-Driven Development)
-- The agent MUST write tests before OR alongside implementation.
-- Domain logic MUST be unit-tested in isolation (no DB, no HTTP).
-- Use cases MUST be tested with mocked ports.
-- Infrastructure adapters MUST be integration-tested.
-- Code WITHOUT tests is considered INCOMPLETE.
-
----
-
-## B5. DRY — Don't Repeat Yourself
-- Any repeated logic MUST be abstracted into a domain service, value object, or utility.
-- The agent MUST NOT duplicate validation rules, business invariants, or mapping logic.
-
----
-
-## B6. KISS — Keep It Simple, Stupid
-- The agent MUST choose the simplest design that satisfies the requirement.
-- The agent MUST NOT introduce patterns (CQRS, Event Sourcing, Sagas) unless the requirement explicitly demands them.
-
----
-
-## B7. YAGNI — You Aren't Gonna Need It
-- The agent MUST NOT implement speculative use cases, unused abstractions, or premature generalizations.
-- Only implement what is explicitly required.
-
----
-
-## B8. Required Backend Structure
-
-    src/
-    ├── domain/                     # Enterprise business rules — zero external dependencies
-    │   ├── entities/               # Aggregates & Entities with identity
-    │   ├── value-objects/          # Immutable domain concepts (Email, Money, CPF…)
-    │   ├── events/                 # Domain Events
-    │   ├── exceptions/             # Domain-specific exceptions
-    │   ├── repositories/           # Repository interfaces (contracts only)
-    │   └── services/               # Domain Services (logic spanning multiple aggregates)
-    │
-    ├── application/                # Application business rules — orchestrates domain
-    │   ├── use-cases/              # One class per use case
-    │   ├── dtos/                   # Input/Output data transfer objects
-    │   ├── ports/                  # Interfaces for external services (email, storage…)
-    │   └── mappers/                # Domain ↔ DTO transformations
-    │
-    ├── infrastructure/             # Frameworks & drivers — implements domain interfaces
-    │   ├── persistence/            # Repository implementations, ORM models, migrations
-    │   ├── messaging/              # Event bus, queue adapters
-    │   ├── external/               # Third-party API clients
-    │   └── config/                 # Env vars, DI container wiring
-    │
-    └── presentation/               # Delivery mechanism — HTTP, CLI, gRPC…
-        ├── http/
-        │   ├── controllers/        # Thin: validate input → call use case → serialize output
-        │   ├── middlewares/
-        │   └── routes/
-        └── cli/                    # Optional: CLI commands
-
-### Backend Layer Rules
-- `domain/` MUST NOT import from `application/`, `infrastructure/`, or `presentation/`.
-- `application/` MUST NOT import from `infrastructure/` or `presentation/`.
-- `infrastructure/` and `presentation/` implement interfaces defined in inner layers.
-- Controllers MUST be thin: no business logic, no direct repository access.
-
----
 
 # SHARED BEHAVIORAL RULES
 
@@ -269,7 +173,7 @@ When the agent's own changes create orphaned imports, variables, or functions, t
 A task is ONLY considered complete if:
 
 - Code follows all applicable principles (DRY, KISS, YAGNI)
-- Architecture follows FSD (frontend) or Clean Architecture + DDD (backend)
+- Architecture follows Feature-Based Architecture
 - No context poisoning is introduced
 - Tests are implemented and passing
 - Code is readable and maintainable

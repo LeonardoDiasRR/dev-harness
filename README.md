@@ -429,6 +429,33 @@ The agent will create all child AGENTS.md files and indexes, covering the full p
 
 ---
 
+### 2.10 Ponytail — Minimalist Coding Plugin
+
+**Type:** Plugin / skill suite  
+**Repository:** https://github.com/DietrichGebert/ponytail
+
+Ponytail keeps AI coding workflows focused on the smallest correct change: delete before adding, reuse existing code, prefer standard library and native platform features, and avoid speculative abstractions.
+
+#### Installation
+
+Install from the package registry supported by your coding environment, or follow the repository instructions:
+
+```
+/plugin install @dietrichgebert/ponytail
+```
+
+#### Typical usage
+
+Use it when you want the agent to avoid over-engineering:
+
+```
+"Use ponytail mode and implement the simplest working fix"
+"Review this PR for over-engineering"
+"Audit this repo for code we can delete"
+```
+
+---
+
 ## 3. Per-project setup checklist
 
 ```
@@ -448,6 +475,7 @@ The agent will create all child AGENTS.md files and indexes, covering the full p
 [ ] Install OpenCode-Mem (cross-session memory)
 [ ] Install Context7 (up-to-date library/API documentation for LLMs)
 [ ] Install DOX (self-documenting AGENTS.md framework for precise project context)
+[ ] Install Ponytail (minimal changes and over-engineering review)
 ```
 
 ---
@@ -463,6 +491,7 @@ The agent will create all child AGENTS.md files and indexes, covering the full p
 | OpenCode-Mem | https://github.com/tickernelz/opencode-mem |
 | Context7 | https://github.com/upstash/context7 |
 | DOX | https://github.com/agent0ai/dox |
+| Ponytail | https://github.com/DietrichGebert/ponytail |
 | Playwright MCP | https://github.com/microsoft/playwright-mcp/tree/main |
 | GitHub CLI | https://cli.github.com/ |
 | Bun | https://bun.sh/ |
