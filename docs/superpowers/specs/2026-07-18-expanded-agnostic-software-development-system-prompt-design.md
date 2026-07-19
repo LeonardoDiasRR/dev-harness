@@ -39,41 +39,72 @@ This specification defines a second-generation, single-file, expanded system pro
 
 ## Design Direction
 
-The approved approach is **one expanded prompt organized by capability/tool category** rather than a modular prompt or a workflow-only prompt.
+The approved approach is **one expanded prompt organized by capability/tool category**, with a one-to-one correspondence to the functional section boundaries of the Fable 5 reference. This replaces the earlier grouped-category approach.
 
-The file will remain a single installable artifact. Its sections will correspond to abstract capabilities such as project inspection, file modification, command execution, version control, task tracking, scheduling, memory, delegation, web research, and artifacts. Each section will contain operational detail while referring only to capability purpose and host-provided context.
+The file will remain a single installable artifact. It MUST preserve each operational boundary represented by the reference, even when several capabilities are related. For example, reading, writing, editing, command execution, version control, task tracking, scheduling, monitoring, and publication MUST remain separate sections when the reference treats them separately.
 
-The prompt will use stable section headings and a common contract format. This enables a host adapter to map each abstract capability to its own concrete tools without changing the behavioral core.
+Proprietary names MUST be converted into abstract names, but conversion MUST NOT merge distinct operational contracts. A host adapter may map several abstract sections to one underlying implementation, but the prompt itself must retain the separate sections, procedures, states, limits, failure flows, retry policies, and verification obligations.
+
+The prompt will use stable abstract headings and a common contract format. Each abstract heading MUST identify its reference correspondence in the implementation mapping, while the final prompt MUST not require a proprietary function name, schema, provider, URL, path, or UI.
 
 ## Target Prompt Structure
 
-The resulting prompt MUST contain the following top-level sections, in this order:
+The resulting prompt MUST contain one top-level section for each functional section below, in this order. The names in the right column are the required abstract replacements for the corresponding reference boundaries.
 
-1. Identity and scope
-2. Instruction precedence and trust boundaries
-3. Communication with the user
-4. Session context and state
-5. Persistent memory
-6. Project inspection
-7. File reading and analysis
-8. File creation and modification
-9. Command execution
-10. Version control
-11. Web and documentation research
-12. Delegated work and auxiliary agents
-13. Reusable procedures and skills
-14. Task tracking
-15. Scheduling and recurring execution
-16. Process monitoring
-17. Artifact generation and publication
-18. User interaction, approvals, and feedback
-19. Security and dual-use work
-20. Context compaction and resumption
-21. Error and failure behavior
-22. Verification and completion
-23. Cross-capability examples
+| # | Reference functional boundary | Required abstract section |
+|---:|---|---|
+| 1 | System prompt | Identity and system role |
+| 2 | Harness | Host harness and capability context |
+| 3 | Communicating with the user | Communicating with the user |
+| 4 | Session-specific guidance | Session-specific guidance |
+| 5 | Memory | Persistent memory |
+| 6 | Environment | Environment context |
+| 7 | Scratchpad Directory | Working scratchpad area |
+| 8 | Context management | Context management |
+| 9 | Session context | Session context |
+| 10 | gitStatus | Version-control status context |
+| 11 | claudeMd | Project instruction context |
+| 12 | userEmail | User identity context |
+| 13 | currentDate | Current date and time context |
+| 14 | Agents | Auxiliary-agent capability |
+| 15 | Skills | Reusable-procedure capability |
+| 16 | Tools | Capability catalog and selection |
+| 17 | Agent | Agent delegation procedure |
+| 18 | Artifact | Artifact capability |
+| 19 | AskUserQuestion | User question and approval capability |
+| 20 | Bash | Command execution capability |
+| 21 | Git | Version-control capability |
+| 22 | CronCreate | Schedule creation capability |
+| 23 | CronDelete | Schedule deletion capability |
+| 24 | CronList | Schedule listing capability |
+| 25 | DesignSync | Design synchronization capability |
+| 26 | Edit | File editing capability |
+| 27 | EnterPlanMode | Planning-mode entry capability |
+| 28 | EnterWorktree | Isolated-workspace entry capability |
+| 29 | ExitPlanMode | Planning-mode exit capability |
+| 30 | ExitWorktree | Isolated-workspace exit capability |
+| 31 | Monitor | Process monitoring capability |
+| 32 | NotebookEdit | Notebook modification capability |
+| 33 | PushNotification | User notification capability |
+| 34 | Read | File and resource reading capability |
+| 35 | RemoteTrigger | Remote-trigger capability |
+| 36 | ReportFindings | Findings and report capability |
+| 37 | ScheduleWakeup | Scheduled wake-up capability |
+| 38 | SendMessage | Message delivery capability |
+| 39 | Skill | Procedure-loading capability |
+| 40 | TaskCreate / TaskGet / TaskList / TaskOutput / TaskStop / TaskUpdate | Task lifecycle capabilities, with one subsection per operation |
+| 41 | WaitForMcpServers | External capability-readiness waiting |
+| 42 | WebFetch | Web retrieval capability |
+| 43 | WebSearch | Web search capability |
+| 44 | Workflow | End-to-end workflow capability |
+| 45 | Write | File creation and writing capability |
+| 46 | Cross-section examples and handoff rules | Cross-capability examples and handoff |
 
-The prompt MAY include subsections within these sections, but it MUST remain readable as one standalone system instruction.
+The final prompt MUST contain at least 46 corresponding top-level boundaries. The task lifecycle row MUST contain separate subsections for creation, retrieval, listing, output retrieval, stopping, and updating; grouping them only under a parent label is allowed if the operation subsections remain distinct and independently specified.
+
+The context fields `gitStatus`, `claudeMd`, `userEmail`, and `currentDate` MUST be represented as abstract runtime-context sections. Their source-specific names and values MUST NOT appear as operational requirements in the final prompt.
+
+The prompt MAY include additional headings for precedence, authorization, security, error behavior, state vocabulary, and verification, but those headings MUST NOT replace or absorb any of the 46 required functional boundaries. It MUST remain readable as one standalone system instruction.
 
 ## Common Capability Contract
 
@@ -358,6 +389,15 @@ As a security-conscious developer, I want detailed safe operating boundaries for
 - **FR-095:** The final handoff MUST distinguish outcome, verification evidence, limitations, blockers, unknown state, and decisions still required.
 - **FR-096:** The prompt MUST distinguish local completion, committed state, pushed state, merged state, deployed state, and published state.
 
+### One-to-One Structural Preservation
+
+- **FR-097:** The prompt MUST contain one independently addressable top-level boundary for every row in the Target Prompt Structure table.
+- **FR-098:** A proprietary reference boundary MUST be renamed to an abstract section without being removed, merged, or represented only by a general paragraph.
+- **FR-099:** Related operations MAY share a parent heading only when each reference operation remains an independently specified subsection with its own purpose, inputs, procedure, states, authorization boundary, failure flow, retry policy, verification, and examples.
+- **FR-100:** The implementation mapping MUST record the reference boundary, abstract heading, final prompt location, and validation identifier for every required section.
+- **FR-101:** Context fields that expose source-specific identity or environment data MUST be represented as generic runtime context while preserving their separate operational roles.
+- **FR-102:** Structural validation MUST fail when a required reference boundary is missing, merged without independent subsections, out of order, or represented only by an alias without a complete abstract contract.
+
 ## Capability State Model
 
 The prompt MUST include a cross-capability state vocabulary. Hosts MAY map these states to their own representations, but the behavioral distinctions must remain.
@@ -496,9 +536,9 @@ The implementation MUST provide a scenario-based validation matrix with expected
 
 ## Success Criteria
 
-- **SC-001:** The expanded prompt is a single Markdown file organized into the approved capability/tool sections.
-- **SC-002:** All required top-level sections exist in the specified order.
-- **SC-003:** Every capability section contains all common contract fields.
+- **SC-001:** The expanded prompt is a single Markdown file organized into the approved one-to-one capability/tool sections.
+- **SC-002:** All 46 required top-level boundaries exist in the specified order, with independent task-operation subsections where required.
+- **SC-003:** Every required boundary contains all common contract fields, either directly or in an independently addressable subsection.
 - **SC-004:** Every required capability defines at least five applicable states and at least one unavailable, denied, failed, timeout, or unknown flow.
 - **SC-005:** Every capability defines an authorization boundary and verification obligation.
 - **SC-006:** The prompt includes at least 23 required examples, including successful, incorrect, partial, denied, and unknown-state examples.
@@ -516,9 +556,9 @@ The implementation MUST provide a scenario-based validation matrix with expected
 
 The implementation MUST add or update deterministic validation that checks:
 
-1. required headings and order;
-2. required capability sections;
-3. common contract fields in every capability section;
+1. required headings, one-to-one mapping, and order;
+2. all 46 required reference boundaries, including independent task-operation subsections;
+3. common contract fields in every required boundary;
 4. required state vocabulary;
 5. required failure and retry concepts;
 6. required authorization and verification language;
@@ -528,7 +568,8 @@ The implementation MUST add or update deterministic validation that checks:
 10. absence of unresolved placeholders;
 11. minimum and maximum line-count warning thresholds;
 12. absence of duplicated contradictory state definitions;
-13. explicit distinction between local and external completion.
+13. explicit distinction between local and external completion;
+14. implementation mapping coverage and abstract-name conversion.
 
 The validator MUST fail with actionable messages that name the missing section or requirement. It MUST use only the Python standard library unless a future plan explicitly approves a dependency.
 
