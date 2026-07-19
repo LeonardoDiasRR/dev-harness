@@ -80,5 +80,22 @@ class ExpandedPromptContractTests(unittest.TestCase):
         self.assertIn("external completion", self.lower)
 
 
+    def test_scenario_terms_and_decision_boundaries_exist(self):
+        scenarios = json.loads((ROOT / "tests" / "fixtures" / "expanded_prompt_scenarios.json").read_text(encoding="utf-8"))
+        self.assertGreaterEqual(len(scenarios), 10)
+        for scenario in scenarios:
+            missing = [term for term in scenario["required_terms"] if term.lower() not in self.lower]
+            self.assertFalse(missing, f"{scenario['id']} missing terms: {missing}")
+            self.assertTrue(scenario["expected_decision"])
+
+    def test_mapping_count_and_unique_headings(self):
+        rows = self.data["sections"]
+        self.assertEqual(self.data["count_model"]["functional_boundaries"], 46)
+        self.assertEqual(self.data["count_model"]["task_operation_sections"], 6)
+        self.assertEqual(len(rows), 51)
+        headings = [row["abstract_heading"] for row in rows]
+        self.assertEqual(len(headings), len(set(headings)))
+
+
 if __name__ == "__main__":
     unittest.main()
