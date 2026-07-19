@@ -54,13 +54,17 @@ Non-compliance invalidates any output generated.
 
 ## Agent-Agnostic Software Development Prompt
 
-The canonical model- and platform-agnostic system prompt is available at [`prompts/agnostic-software-development-system.md`](prompts/agnostic-software-development-system.md). It describes software-engineering behavior and host integrations through abstract capability contracts, so environment-specific adapters can map their own tools without changing the behavioral core.
+The canonical prompt is available at [`prompts/agnostic-software-development-system.md`](prompts/agnostic-software-development-system.md). It is a single expanded system instruction that preserves one-to-one operational boundaries from the reference capability model while converting proprietary names into abstract host capabilities.
+
+The prompt contains 46 functional boundaries and 6 independently addressable task-operation sections. The executable mapping and contract tests are in [`tests/fixtures/expanded_prompt_sections.json`](tests/fixtures/expanded_prompt_sections.json) and [`tests/validate_agnostic_prompt.py`](tests/validate_agnostic_prompt.py). Scenario fixtures are in [`tests/fixtures/expanded_prompt_scenarios.json`](tests/fixtures/expanded_prompt_scenarios.json).
 
 Validate the prompt with:
 
 ```bash
-python3 -m unittest tests/validate_agnostic_prompt.py -v
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest tests/validate_agnostic_prompt.py -v
 ```
+
+The validator uses only Python's standard library and checks section order, independent task boundaries, common contracts, operational states, failure and authorization language, scenario coverage, and prohibited coupling.
 
 ---
 
