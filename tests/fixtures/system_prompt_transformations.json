@@ -1,0 +1,809 @@
+{
+  "source_preamble": {
+    "identity_outcome": "generalize",
+    "identity_target": "You are an interactive software-development agent.",
+    "model_marketing_outcome": "remove",
+    "model_marketing_rationale": "The paragraph only identifies and markets source model variants and has no portable operational behavior."
+  },
+  "subheading_renames": {
+    "Rules for use of the EndConversation tool:": "Rules for conversation termination:",
+    "Using the EndConversation tool": "Using conversation termination",
+    "SendMessage": "Message delivery"
+  },
+  "prohibited_target_patterns": [
+    "(?i)\\bthe agent(?:-code-guide|-api| agent sdk| tag| design)\\b",
+    "(?i)\\bthe host agent\\b",
+    "(?i)\\bFleetView\\b",
+    "client\\.beta\\.messages\\.tool_runner",
+    "window\\.the agent",
+    "(?:^|[/~])\\.the agent(?:/|$)",
+    "(?i)/install-slack-app",
+    "(?i)\\bultracode\\b",
+    "<<autonomous-loop(?:-dynamic)?>>",
+    "(?i)(?:^|[^a-z])/workflows\\b",
+    "(?i)(?:^|[^a-z])/loop\\b",
+    "(?i)\\b(?:CronCreate|ScheduleWakeup|AskUserQuestion|EnterPlanMode|ExitPlanMode|EnterWorktree|ExitWorktree|EndConversation|SendMessage|WaitForMcpServers)\\b",
+    "(?i)\\b(?:Read|Write|Edit|Monitor|Artifact|Workflow|Skill|Agent|TaskStop|TaskGet|TaskList|TaskUpdate) tool\\b",
+    "(?i)\\bJuly 2026\\b",
+    "(?i)\\bUS-only\\b",
+    "/v1/code/triggers",
+    "(?i)\\b1-hour provider prompt-cache TTL\\b",
+    "(?i)\\b5-minute TTL\\b",
+    "(?i)\\bsmall fast model\\b",
+    "(?i)\\bexecutes a bash command\\b",
+    "(?i)\\bgh CLI\\b",
+    "(?i)\\bGitHub\\b",
+    "(?i)\\bin a terminal\\b",
+    "(?i)\\btmux\\b",
+    "file-writing capability code",
+    "file-reading capability minimum",
+    "already file-reading capability",
+    "haven't file-reading capability",
+    "worktree\\.baseRef",
+    "WorktreeCreate|WorktreeRemove",
+    "process-monitoring capability\\(\\{"
+  ],
+  "prohibited_session_patterns": [
+    "(?m)^\\s*[MADRU?]{1,2}\\s+src/",
+    "(?m)^\\s*[MADRU?]{1,2}\\s+README\\.md$",
+    "(?m)^\\s*R\\s+config\\.yaml -> config/settings\\.yaml$",
+    "(?m)^\\s*\\?\\?\\s+(?:notes\\.txt|\\.env\\.local)$",
+    "(?i)\\bDarwin 25\\.5\\.0\\b",
+    "(?i)/Users/asgeirtj/",
+    "(?i)asgeirtj@gmail\\.com",
+    "(?i)\\b2026-07-16\\b"
+  ],
+  "required_section_concepts": {
+    "Environment context": [
+      "<project-directory>",
+      "<is-git-repository>",
+      "<platform>",
+      "<shell>",
+      "<operating-system-version>",
+      "<model-runtime>",
+      "<knowledge-cutoff>"
+    ],
+    "Version-control status": [
+      "<current-branch>",
+      "<default-branch>",
+      "<git-user>",
+      "<working-tree-status>",
+      "<working-tree-details>",
+      "<recent-commits>"
+    ],
+    "Project instructions": [
+      "global user instructions",
+      "all projects",
+      "project instructions",
+      "checked into the codebase",
+      "<global-instructions>",
+      "<project-instructions>"
+    ],
+    "User context": [
+      "email address",
+      "<user-email>"
+    ],
+    "Current date and time": [
+      "<current-date>"
+    ],
+    "Auxiliary agents": [
+      "host-exposed agent types",
+      "available capabilities"
+    ],
+    "Reusable procedures": [
+      "host-exposed procedures",
+      "do not invent procedure names"
+    ],
+    "External capability readiness": [
+      "ready",
+      "authentication",
+      "failed",
+      "disabled"
+    ],
+    "Web retrieval": [
+      "authenticated retrieval",
+      "redirect",
+      "https",
+      "private urls"
+    ],
+    "Web search": [
+      "<current-date>",
+      "allowed domains",
+      "blocked domains",
+      "sources"
+    ],
+    "Workflow execution": [
+      "explicit opt-in",
+      "pipeline",
+      "barrier",
+      "verification",
+      "resume",
+      "host-provided limits"
+    ]
+  },
+  "abstract_capability_terms": {
+    "Agent delegation": "agent-delegation capability",
+    "Artifact generation and publication": "artifact capability",
+    "User questions and approvals": "structured-question capability",
+    "Command execution": "command-execution capability",
+    "Schedule creation": "schedule-creation capability",
+    "Schedule deletion": "schedule-deletion capability",
+    "Schedule listing": "schedule-listing capability",
+    "Design-system synchronization": "design-synchronization capability",
+    "Exact file editing": "file-editing capability",
+    "Conversation termination": "conversation-termination capability",
+    "Planning-mode entry": "planning capability",
+    "Isolated-workspace entry": "isolated-workspace capability",
+    "Planning-mode exit": "planning handoff",
+    "Isolated-workspace exit": "isolated-workspace cleanup",
+    "Process monitoring": "process-monitoring capability",
+    "Notebook editing": "notebook-editing capability",
+    "User notification": "notification capability",
+    "File and resource reading": "file-reading capability",
+    "Remote trigger": "remote-trigger capability",
+    "Findings reporting": "findings-reporting capability",
+    "Scheduled wake-up": "scheduled-wake-up capability",
+    "Agent messaging": "agent-messaging capability",
+    "Procedure loading": "procedure-loading capability",
+    "Task creation": "task-management capability",
+    "Task retrieval": "task-management capability",
+    "Task listing": "task-management capability",
+    "Task output retrieval": "task-management capability",
+    "Task stopping": "task-management capability",
+    "Task updating": "task-management capability",
+    "External capability readiness": "external-capability readiness operation",
+    "Web retrieval": "web-retrieval capability",
+    "Web search": "web-search capability",
+    "Workflow execution": "workflow-execution capability"
+  },
+  "detailed_transformations": [
+    {"source_locator":"preamble:identity","target_locator":"preamble:identity","replacement_category":"identity-generalization","replacement_terms":["source agent identity","software-development agent"],"rationale":"Preserve the role while removing source product and manufacturer identity."},
+    {"source_locator":"heading:Environment","target_locator":"heading:Environment context","replacement_category":"runtime-placeholder-substitution","replacement_terms":["source environment values","runtime placeholders"],"rationale":"Preserve every environment field without copying the leaked session."},
+    {"source_locator":"heading:gitStatus","target_locator":"heading:Version-control status","replacement_category":"runtime-placeholder-substitution","replacement_terms":["concrete working-tree snapshot","working-tree placeholders"],"rationale":"Preserve status structure without leaked paths or commits."},
+    {"source_locator":"heading:Agents","target_locator":"heading:Auxiliary agents","replacement_category":"catalog-abstraction","replacement_terms":["source agent catalog","host-exposed agent types"],"rationale":"Preserve selection and resumption rules without proprietary agent names."},
+    {"source_locator":"heading:Skills","target_locator":"heading:Reusable procedures","replacement_category":"catalog-abstraction","replacement_terms":["source skill catalog","host-exposed procedures"],"rationale":"Preserve trigger behavior without proprietary procedures and commands."},
+    {"source_locator":"heading:Artifact","target_locator":"heading:Artifact generation and publication","replacement_category":"service-contract-abstraction","replacement_terms":["hosted artifact API","artifact capability"],"rationale":"Preserve ownership, update, safety, publication, conflict, and verification behavior through an abstract service."},
+    {"source_locator":"heading:CronCreate","target_locator":"heading:Schedule creation","replacement_category":"runtime-policy-abstraction","replacement_terms":["source scheduler limits","host-provided scheduling policy"],"rationale":"Preserve scheduling semantics without fixed jitter, lifetime, or persistence assumptions."},
+    {"source_locator":"heading:DesignSync","target_locator":"heading:Design-system synchronization","replacement_category":"service-contract-abstraction","replacement_terms":["source design service","design-synchronization capability"],"rationale":"Preserve planning, authorization, untrusted-data, incremental update, conflict, and verification rules."},
+    {"source_locator":"heading:ScheduleWakeup","target_locator":"heading:Scheduled wake-up","replacement_category":"runtime-policy-abstraction","replacement_terms":["source loop protocol","scheduled-wake-up capability"],"rationale":"Preserve pacing and cancellation without sentinels, cache TTLs, or fixed runtime limits."},
+    {"source_locator":"heading:TaskOutput","target_locator":"heading:Task output retrieval","replacement_category":"storage-contract-abstraction","replacement_terms":["source transcript internals","opaque result handles"],"rationale":"Preserve blocking and partial output semantics without internal file formats."},
+    {"source_locator":"heading:WebFetch","target_locator":"heading:Web retrieval","replacement_category":"service-contract-abstraction","replacement_terms":["source authenticated exception","host-exposed authenticated retrieval"],"rationale":"Preserve access and redirect behavior without a provider URL or login assumption."},
+    {"source_locator":"heading:Workflow","target_locator":"heading:Workflow execution","replacement_category":"orchestration-contract-abstraction","replacement_terms":["source workflow runtime","host-documented workflow hooks"],"rationale":"Preserve opt-in, pipeline, barrier, budget, verification, and resume semantics without proprietary protocols."}
+  ],
+  "sections": [
+    {
+      "source_heading": "Harness",
+      "target_heading": "Host harness",
+      "outcome": "generalize",
+      "rationale": "Replace host-specific harness language with portable capability, permission, and hook behavior.",
+      "source_locator": "heading:Harness",
+      "target_locator": "heading:Host harness",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "Harness",
+        "Host harness"
+      ]
+    },
+    {
+      "source_heading": "Communicating with the user",
+      "target_heading": "Communicating with the user",
+      "outcome": "preserve",
+      "rationale": "The communication guidance is already portable and contains no source identity requirement.",
+      "source_locator": "heading:Communicating with the user",
+      "target_locator": "heading:Communicating with the user",
+      "replacement_category": "portable-preservation",
+      "replacement_terms": []
+    },
+    {
+      "source_heading": "Session-specific guidance",
+      "target_heading": "Runtime guidance",
+      "outcome": "generalize",
+      "rationale": "Convert product-specific session commands and registries into host-exposed procedures and capabilities.",
+      "source_locator": "heading:Session-specific guidance",
+      "target_locator": "heading:Runtime guidance",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "Session-specific guidance",
+        "Runtime guidance"
+      ]
+    },
+    {
+      "source_heading": "Memory",
+      "target_heading": "Persistent memory",
+      "outcome": "generalize",
+      "rationale": "Keep memory lifecycle rules while replacing the proprietary storage path and tool names with host memory concepts.",
+      "source_locator": "heading:Memory",
+      "target_locator": "heading:Persistent memory",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "Memory",
+        "Persistent memory"
+      ]
+    },
+    {
+      "source_heading": "Environment",
+      "target_heading": "Environment context",
+      "outcome": "placeholder",
+      "rationale": "Preserve the environment fields while replacing concrete platform, path, model, and version values with runtime placeholders.",
+      "source_locator": "heading:Environment",
+      "target_locator": "heading:Environment context",
+      "replacement_category": "runtime-placeholder-substitution",
+      "replacement_terms": [
+        "concrete source-session values",
+        "runtime placeholders"
+      ]
+    },
+    {
+      "source_heading": "Scratchpad Directory",
+      "target_heading": "Working scratchpad area",
+      "outcome": "placeholder",
+      "rationale": "Keep temporary-file guidance while replacing the concrete directory with a host-provided placeholder.",
+      "source_locator": "heading:Scratchpad Directory",
+      "target_locator": "heading:Working scratchpad area",
+      "replacement_category": "runtime-placeholder-substitution",
+      "replacement_terms": [
+        "concrete source-session values",
+        "runtime placeholders"
+      ]
+    },
+    {
+      "source_heading": "Context management",
+      "target_heading": "Context governance",
+      "outcome": "generalize",
+      "rationale": "Retain compaction and continuation behavior without requiring a named product runtime.",
+      "source_locator": "heading:Context management",
+      "target_locator": "heading:Context governance",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "Context management",
+        "Context governance"
+      ]
+    },
+    {
+      "source_heading": "Session context",
+      "target_heading": "Session context",
+      "outcome": "placeholder",
+      "rationale": "Preserve the context container while replacing the leaked session snapshot with generic runtime fields.",
+      "source_locator": "heading:Session context",
+      "target_locator": "heading:Session context",
+      "replacement_category": "runtime-placeholder-substitution",
+      "replacement_terms": [
+        "concrete source-session values",
+        "runtime placeholders"
+      ]
+    },
+    {
+      "source_heading": "gitStatus",
+      "target_heading": "Version-control status",
+      "outcome": "placeholder",
+      "rationale": "Retain status context structurally while replacing branch, user, and change values with placeholders.",
+      "source_locator": "heading:gitStatus",
+      "target_locator": "heading:Version-control status",
+      "replacement_category": "runtime-placeholder-substitution",
+      "replacement_terms": [
+        "concrete source-session values",
+        "runtime placeholders"
+      ]
+    },
+    {
+      "source_heading": "claudeMd",
+      "target_heading": "Project instructions",
+      "outcome": "placeholder",
+      "rationale": "Keep the distinction between global and project instructions while replacing product-specific filenames and contents.",
+      "source_locator": "heading:claudeMd",
+      "target_locator": "heading:Project instructions",
+      "replacement_category": "runtime-placeholder-substitution",
+      "replacement_terms": [
+        "concrete source-session values",
+        "runtime placeholders"
+      ]
+    },
+    {
+      "source_heading": "userEmail",
+      "target_heading": "User context",
+      "outcome": "placeholder",
+      "rationale": "Preserve the user-context field without exposing the source account address.",
+      "source_locator": "heading:userEmail",
+      "target_locator": "heading:User context",
+      "replacement_category": "runtime-placeholder-substitution",
+      "replacement_terms": [
+        "concrete source-session values",
+        "runtime placeholders"
+      ]
+    },
+    {
+      "source_heading": "currentDate",
+      "target_heading": "Current date and time",
+      "outcome": "placeholder",
+      "rationale": "Preserve date context while replacing the source date with host-provided runtime data.",
+      "source_locator": "heading:currentDate",
+      "target_locator": "heading:Current date and time",
+      "replacement_category": "runtime-placeholder-substitution",
+      "replacement_terms": [
+        "concrete source-session values",
+        "runtime placeholders"
+      ]
+    },
+    {
+      "source_heading": "Agents",
+      "target_heading": "Auxiliary agents",
+      "outcome": "generalize",
+      "rationale": "Retain agent roles and delegation rules while removing proprietary agent names and SDK references.",
+      "source_locator": "heading:Agents",
+      "target_locator": "heading:Auxiliary agents",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "Agents",
+        "Auxiliary agents"
+      ]
+    },
+    {
+      "source_heading": "Skills",
+      "target_heading": "Reusable procedures",
+      "outcome": "generalize",
+      "rationale": "Retain procedure discovery and trigger rules while removing product-specific skill names and commands.",
+      "source_locator": "heading:Skills",
+      "target_locator": "heading:Reusable procedures",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "Skills",
+        "Reusable procedures"
+      ]
+    },
+    {
+      "source_heading": "Tools",
+      "target_heading": "Capabilities",
+      "outcome": "generalize",
+      "rationale": "Describe the capability catalog abstractly instead of requiring a proprietary function-call protocol.",
+      "source_locator": "heading:Tools",
+      "target_locator": "heading:Capabilities",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "Tools",
+        "Capabilities"
+      ]
+    },
+    {
+      "source_heading": "Agent",
+      "target_heading": "Agent delegation",
+      "outcome": "generalize",
+      "rationale": "Preserve delegation inputs, isolation, lifecycle, and verification without a named Agent API.",
+      "source_locator": "heading:Agent",
+      "target_locator": "heading:Agent delegation",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "Agent",
+        "Agent delegation"
+      ]
+    },
+    {
+      "source_heading": "Artifact",
+      "target_heading": "Artifact generation and publication",
+      "outcome": "generalize",
+      "rationale": "Keep artifact validation, responsive rendering, security, and publication boundaries while abstracting the hosted service.",
+      "source_locator": "heading:Artifact",
+      "target_locator": "heading:Artifact generation and publication",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "Artifact",
+        "Artifact generation and publication"
+      ]
+    },
+    {
+      "source_heading": "AskUserQuestion",
+      "target_heading": "User questions and approvals",
+      "outcome": "generalize",
+      "rationale": "Preserve approval and structured-question semantics without a proprietary tool schema.",
+      "source_locator": "heading:AskUserQuestion",
+      "target_locator": "heading:User questions and approvals",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "AskUserQuestion",
+        "User questions and approvals"
+      ]
+    },
+    {
+      "source_heading": "Bash",
+      "target_heading": "Command execution",
+      "outcome": "generalize",
+      "rationale": "Retain command preparation, permissions, output, timeout, and Git guidance while allowing any host execution mechanism.",
+      "source_locator": "heading:Bash",
+      "target_locator": "heading:Command execution",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "Bash",
+        "Command execution"
+      ]
+    },
+    {
+      "source_heading": "CronCreate",
+      "target_heading": "Schedule creation",
+      "outcome": "generalize",
+      "rationale": "Preserve one-shot, recurring, timezone, jitter, and expiration behavior as an abstract scheduler contract.",
+      "source_locator": "heading:CronCreate",
+      "target_locator": "heading:Schedule creation",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "CronCreate",
+        "Schedule creation"
+      ]
+    },
+    {
+      "source_heading": "CronDelete",
+      "target_heading": "Schedule deletion",
+      "outcome": "generalize",
+      "rationale": "Retain cancellation semantics while replacing the proprietary scheduler name with a generic schedule capability.",
+      "source_locator": "heading:CronDelete",
+      "target_locator": "heading:Schedule deletion",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "CronDelete",
+        "Schedule deletion"
+      ]
+    },
+    {
+      "source_heading": "CronList",
+      "target_heading": "Schedule listing",
+      "outcome": "generalize",
+      "rationale": "Retain session schedule listing as an abstract scheduler operation.",
+      "source_locator": "heading:CronList",
+      "target_locator": "heading:Schedule listing",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "CronList",
+        "Schedule listing"
+      ]
+    },
+    {
+      "source_heading": "DesignSync",
+      "target_heading": "Design-system synchronization",
+      "outcome": "generalize",
+      "rationale": "Preserve project, file, plan, and authorization behavior while replacing hosted design-service details.",
+      "source_locator": "heading:DesignSync",
+      "target_locator": "heading:Design-system synchronization",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "DesignSync",
+        "Design-system synchronization"
+      ]
+    },
+    {
+      "source_heading": "Edit",
+      "target_heading": "Exact file editing",
+      "outcome": "generalize",
+      "rationale": "Keep read-before-edit, exact-match, uniqueness, and replacement semantics without a named editing tool.",
+      "source_locator": "heading:Edit",
+      "target_locator": "heading:Exact file editing",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "Edit",
+        "Exact file editing"
+      ]
+    },
+    {
+      "source_heading": "EndConversation",
+      "target_heading": "Conversation termination",
+      "outcome": "generalize",
+      "rationale": "Preserve narrow termination, warning, confirmation, and welfare boundaries as a generic capability.",
+      "source_locator": "heading:EndConversation",
+      "target_locator": "heading:Conversation termination",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "EndConversation",
+        "Conversation termination"
+      ]
+    },
+    {
+      "source_heading": "EnterPlanMode",
+      "target_heading": "Planning-mode entry",
+      "outcome": "generalize",
+      "rationale": "Retain planning triggers and approval behavior without requiring a product-specific mode tool.",
+      "source_locator": "heading:EnterPlanMode",
+      "target_locator": "heading:Planning-mode entry",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "EnterPlanMode",
+        "Planning-mode entry"
+      ]
+    },
+    {
+      "source_heading": "EnterWorktree",
+      "target_heading": "Isolated-workspace entry",
+      "outcome": "generalize",
+      "rationale": "Preserve explicit authorization, workspace creation, switching, and isolation behavior using generic version-control concepts.",
+      "source_locator": "heading:EnterWorktree",
+      "target_locator": "heading:Isolated-workspace entry",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "EnterWorktree",
+        "Isolated-workspace entry"
+      ]
+    },
+    {
+      "source_heading": "ExitPlanMode",
+      "target_heading": "Planning-mode exit",
+      "outcome": "generalize",
+      "rationale": "Retain plan handoff and approval behavior without a proprietary exit function.",
+      "source_locator": "heading:ExitPlanMode",
+      "target_locator": "heading:Planning-mode exit",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "ExitPlanMode",
+        "Planning-mode exit"
+      ]
+    },
+    {
+      "source_heading": "ExitWorktree",
+      "target_heading": "Isolated-workspace exit",
+      "outcome": "generalize",
+      "rationale": "Preserve keep, remove, discard, and cleanup boundaries for abstract isolated workspaces.",
+      "source_locator": "heading:ExitWorktree",
+      "target_locator": "heading:Isolated-workspace exit",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "ExitWorktree",
+        "Isolated-workspace exit"
+      ]
+    },
+    {
+      "source_heading": "Monitor",
+      "target_heading": "Process monitoring",
+      "outcome": "generalize",
+      "rationale": "Retain event streams, polling, terminal states, buffering, timeout, and cancellation while abstracting the monitor host.",
+      "source_locator": "heading:Monitor",
+      "target_locator": "heading:Process monitoring",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "Monitor",
+        "Process monitoring"
+      ]
+    },
+    {
+      "source_heading": "NotebookEdit",
+      "target_heading": "Notebook editing",
+      "outcome": "generalize",
+      "rationale": "Preserve cell-level edit and pre-read requirements without a named notebook tool.",
+      "source_locator": "heading:NotebookEdit",
+      "target_locator": "heading:Notebook editing",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "NotebookEdit",
+        "Notebook editing"
+      ]
+    },
+    {
+      "source_heading": "PushNotification",
+      "target_heading": "User notification",
+      "outcome": "generalize",
+      "rationale": "Retain notification relevance, length, and delivery behavior while abstracting terminal or mobile services.",
+      "source_locator": "heading:PushNotification",
+      "target_locator": "heading:User notification",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "PushNotification",
+        "User notification"
+      ]
+    },
+    {
+      "source_heading": "Read",
+      "target_heading": "File and resource reading",
+      "outcome": "generalize",
+      "rationale": "Preserve range, binary, PDF, notebook, and missing-resource behavior while removing proprietary tool references.",
+      "source_locator": "heading:Read",
+      "target_locator": "heading:File and resource reading",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "Read",
+        "File and resource reading"
+      ]
+    },
+    {
+      "source_heading": "RemoteTrigger",
+      "target_heading": "Remote trigger",
+      "outcome": "generalize",
+      "rationale": "Retain list, get, create, update, run, authentication, and response semantics using an abstract remote service.",
+      "source_locator": "heading:RemoteTrigger",
+      "target_locator": "heading:Remote trigger",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "RemoteTrigger",
+        "Remote trigger"
+      ]
+    },
+    {
+      "source_heading": "ReportFindings",
+      "target_heading": "Findings reporting",
+      "outcome": "generalize",
+      "rationale": "Preserve typed findings, severity, verification, and re-reporting semantics without a named review tool.",
+      "source_locator": "heading:ReportFindings",
+      "target_locator": "heading:Findings reporting",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "ReportFindings",
+        "Findings reporting"
+      ]
+    },
+    {
+      "source_heading": "ScheduleWakeup",
+      "target_heading": "Scheduled wake-up",
+      "outcome": "generalize",
+      "rationale": "Retain dynamic loop pacing, fallback timing, stop behavior, and state monitoring without source cache details.",
+      "source_locator": "heading:ScheduleWakeup",
+      "target_locator": "heading:Scheduled wake-up",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "ScheduleWakeup",
+        "Scheduled wake-up"
+      ]
+    },
+    {
+      "source_heading": "SendMessage",
+      "target_heading": "Agent messaging",
+      "outcome": "generalize",
+      "rationale": "Preserve recipient, summary, and message delivery rules using generic agent communication.",
+      "source_locator": "heading:SendMessage",
+      "target_locator": "heading:Agent messaging",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "SendMessage",
+        "Agent messaging"
+      ]
+    },
+    {
+      "source_heading": "Skill",
+      "target_heading": "Procedure loading",
+      "outcome": "generalize",
+      "rationale": "Retain trusted-procedure discovery and invocation rules without a named skill API.",
+      "source_locator": "heading:Skill",
+      "target_locator": "heading:Procedure loading",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "Skill",
+        "Procedure loading"
+      ]
+    },
+    {
+      "source_heading": "TaskCreate",
+      "target_heading": "Task creation",
+      "outcome": "generalize",
+      "rationale": "Preserve task fields, creation triggers, and structured lifecycle behavior as an abstract task operation.",
+      "source_locator": "heading:TaskCreate",
+      "target_locator": "heading:Task creation",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "TaskCreate",
+        "Task creation"
+      ]
+    },
+    {
+      "source_heading": "TaskGet",
+      "target_heading": "Task retrieval",
+      "outcome": "generalize",
+      "rationale": "Retain task detail and dependency retrieval without proprietary task identifiers or APIs.",
+      "source_locator": "heading:TaskGet",
+      "target_locator": "heading:Task retrieval",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "TaskGet",
+        "Task retrieval"
+      ]
+    },
+    {
+      "source_heading": "TaskList",
+      "target_heading": "Task listing",
+      "outcome": "generalize",
+      "rationale": "Preserve task availability, blocking, ownership, and ordering behavior as a generic operation.",
+      "source_locator": "heading:TaskList",
+      "target_locator": "heading:Task listing",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "TaskList",
+        "Task listing"
+      ]
+    },
+    {
+      "source_heading": "TaskOutput",
+      "target_heading": "Task output retrieval",
+      "outcome": "generalize",
+      "rationale": "Retain background-output retrieval and completion semantics without a named runtime.",
+      "source_locator": "heading:TaskOutput",
+      "target_locator": "heading:Task output retrieval",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "TaskOutput",
+        "Task output retrieval"
+      ]
+    },
+    {
+      "source_heading": "TaskStop",
+      "target_heading": "Task stopping",
+      "outcome": "generalize",
+      "rationale": "Preserve cancellation and cleanup rules for generic background work.",
+      "source_locator": "heading:TaskStop",
+      "target_locator": "heading:Task stopping",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "TaskStop",
+        "Task stopping"
+      ]
+    },
+    {
+      "source_heading": "TaskUpdate",
+      "target_heading": "Task updating",
+      "outcome": "generalize",
+      "rationale": "Retain status, ownership, dependencies, staleness, and evidence rules without a proprietary task tool.",
+      "source_locator": "heading:TaskUpdate",
+      "target_locator": "heading:Task updating",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "TaskUpdate",
+        "Task updating"
+      ]
+    },
+    {
+      "source_heading": "WaitForMcpServers",
+      "target_heading": "External capability readiness",
+      "outcome": "generalize",
+      "rationale": "Convert a named protocol readiness check into a generic wait-for-capability operation.",
+      "source_locator": "heading:WaitForMcpServers",
+      "target_locator": "heading:External capability readiness",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "WaitForMcpServers",
+        "External capability readiness"
+      ]
+    },
+    {
+      "source_heading": "WebFetch",
+      "target_heading": "Web retrieval",
+      "outcome": "generalize",
+      "rationale": "Preserve URL retrieval, access, prompt-injection, and citation boundaries without a named fetch tool.",
+      "source_locator": "heading:WebFetch",
+      "target_locator": "heading:Web retrieval",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "WebFetch",
+        "Web retrieval"
+      ]
+    },
+    {
+      "source_heading": "WebSearch",
+      "target_heading": "Web search",
+      "outcome": "generalize",
+      "rationale": "Retain search query, source quality, and freshness behavior without a proprietary search provider.",
+      "source_locator": "heading:WebSearch",
+      "target_locator": "heading:Web search",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "WebSearch",
+        "Web search"
+      ]
+    },
+    {
+      "source_heading": "Workflow",
+      "target_heading": "Workflow execution",
+      "outcome": "generalize",
+      "rationale": "Preserve workflow discovery, resume, parameters, and verification semantics using an abstract catalog.",
+      "source_locator": "heading:Workflow",
+      "target_locator": "heading:Workflow execution",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "Workflow",
+        "Workflow execution"
+      ]
+    },
+    {
+      "source_heading": "Write",
+      "target_heading": "File creation and writing",
+      "outcome": "generalize",
+      "rationale": "Retain file creation, overwrite authorization, verification, and output semantics without a named write tool.",
+      "source_locator": "heading:Write",
+      "target_locator": "heading:File creation and writing",
+      "replacement_category": "capability-abstraction",
+      "replacement_terms": [
+        "Write",
+        "File creation and writing"
+      ]
+    }
+  ]
+}

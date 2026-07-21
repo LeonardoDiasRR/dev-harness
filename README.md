@@ -66,6 +66,18 @@ PYTHONDONTWRITEBYTECODE=1 python3 -m unittest tests/validate_agnostic_prompt.py 
 
 The validator uses only Python's standard library and checks section order, independent task boundaries, common contracts, operational states, failure and authorization language, scenario coverage, and prohibited coupling.
 
+## Source-Derived Agent-Agnostic System Prompt
+
+[`prompts/system-prompt.md`](prompts/system-prompt.md) is a faithful, source-derived system prompt. It preserves the source's operational rules while normalizing source-specific agent, model, manufacturer, service, and session details into generic capabilities or runtime placeholders. Its transformation map and deterministic validator are [`tests/fixtures/system_prompt_transformations.json`](tests/fixtures/system_prompt_transformations.json) and [`tests/validate_system_prompt.py`](tests/validate_system_prompt.py).
+
+Validate it with:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest tests/validate_system_prompt.py -v
+```
+
+The validator checks exact source-to-target heading hierarchy, transformation-map coverage, portable concept preservation, runtime placeholders, session-data removal, malformed replacement artifacts, and prohibited source-specific tool, service, model, path, protocol, and environment coupling.
+
 ---
 
 ## 2. Plugins, Tools, Skills and MCPs
