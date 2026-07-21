@@ -52,35 +52,32 @@ Non-compliance invalidates any output generated.
 
 ---
 
-## Agent-Agnostic Software Development Prompt
+## 2. OpenCode Agent
 
-The canonical prompt is available at [`prompts/agnostic-software-development-system.md`](prompts/agnostic-software-development-system.md). It is a single expanded system instruction that preserves one-to-one operational boundaries from the reference capability model while converting proprietary names into abstract host capabilities.
+The `agents/` directory contains the definition of the **Coder** primary agent for OpenCode.
 
-The prompt contains 46 functional boundaries and 6 independently addressable task-operation sections. The executable mapping and contract tests are in [`tests/fixtures/expanded_prompt_sections.json`](tests/fixtures/expanded_prompt_sections.json) and [`tests/validate_agnostic_prompt.py`](tests/validate_agnostic_prompt.py). Scenario fixtures are in [`tests/fixtures/expanded_prompt_scenarios.json`](tests/fixtures/expanded_prompt_scenarios.json).
+### Coder — Primary Agent
 
-Validate the prompt with:
+[`agents/coder.md`](agents/coder.md) defines a `primary`-mode autonomous software-development agent: implementing features, refactoring, debugging, writing tests, planning non-trivial changes, delegating multi-step work to subagents, and producing verified, quality-focused code. It also handles authorized security testing and defensive workflows, and maintains persistent memory across sessions. It references a shared system prompt at `~/.config/opencode/agent/system-prompt.md`.
 
-```bash
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest tests/validate_agnostic_prompt.py -v
-```
+A primary agent is the main assistant you interact with directly — switch between primaries with **Tab** during a session.
 
-The validator uses only Python's standard library and checks section order, independent task boundaries, common contracts, operational states, failure and authorization language, scenario coverage, and prohibited coupling.
+#### Installation
 
-## Source-Derived Agent-Agnostic System Prompt
-
-[`prompts/system-prompt.md`](prompts/system-prompt.md) is a faithful, source-derived system prompt. It preserves the source's operational rules while normalizing source-specific agent, model, manufacturer, service, and session details into generic capabilities or runtime placeholders. Its transformation map and deterministic validator are [`tests/fixtures/system_prompt_transformations.json`](tests/fixtures/system_prompt_transformations.json) and [`tests/validate_system_prompt.py`](tests/validate_system_prompt.py).
-
-Validate it with:
+Copy the agent definition to the OpenCode global agents directory:
 
 ```bash
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest tests/validate_system_prompt.py -v
+mkdir -p ~/.config/opencode/agent
+cp agents/coder.md ~/.config/opencode/agent/coder.md
 ```
 
-The validator checks exact source-to-target heading hierarchy, transformation-map coverage, portable concept preservation, runtime placeholders, session-data removal, malformed replacement artifacts, and prohibited source-specific tool, service, model, path, protocol, and environment coupling.
+Restart OpenCode. The **Coder** agent will appear as a selectable primary agent. Press **Tab** to cycle through available primary agents.
+
+The agent file uses frontmatter (`mode: primary`, `description`, `color`) and an optional body referencing the system prompt. See the [OpenCode agents documentation](https://opencode.ai/docs/pt-br/agents/) for all available options (`model`, `temperature`, `tools`, `permission`, `steps`, etc.).
 
 ---
 
-## 2. Plugins, Tools, Skills and MCPs
+## 3. Plugins, Tools, Skills and MCPs
 
 All items in this section are **environment-agnostic** — they work in Claude Code, Codex, Cursor, OpenCode, Gemini CLI, Copilot, Windsurf, Cline, and other AI coding tools. Installation commands shown follow each tool's own conventions; adapt the syntax to your environment as needed.
 
@@ -472,17 +469,19 @@ Use it when you want the agent to avoid over-engineering:
 
 ---
 
-## 3. Per-project setup checklist
+## 4. Per-project setup checklist
 
 ```
 [ ] Copy CONSTITUTION.md to the project root
 [ ] Add the CONSTITUTION.md read instruction to your project instructions mechanism
-[ ] Install the plugins, tools, skills, and MCPs you want to use (see section 2)
+[ ] Install the Coder primary agent for OpenCode (see section 2)
+[ ] Install the plugins, tools, skills, and MCPs you want to use (see section 3)
 ```
 
 ### Suggested stack
 
 ```
+[ ] Install Coder primary agent for OpenCode
 [ ] Install Superpowers (spec-driven development + TDD)
 [ ] Install @nextlevelbuilder/ui-ux-pro-max-skill (if the project has a UI)
 [ ] Install Playwright MCP (if the project needs browser automation through MCP)
@@ -496,7 +495,7 @@ Use it when you want the agent to avoid over-engineering:
 
 ---
 
-## 4. References
+## 5. References
 
 | Resource | Link |
 |----------|------|
