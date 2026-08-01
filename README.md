@@ -413,35 +413,6 @@ If globally installed via `npm install -g ctx7`, uninstall separately: `npm unin
 
 ---
 
-### 2.9 DOX — Self-Documenting AGENTS.md Framework
-
-**Type:** Markdown instruction / documentation framework  
-**Repository:** https://github.com/agent0ai/dox
-
-DOX is a lightweight AGENTS.md framework that gives AI agents precise project context through a hierarchy of documentation files. Before any edit, the agent walks the docs tree from the root to the area it will touch, getting exact local guidelines instead of guessing. After meaningful changes, it updates the affected AGENTS.md files to keep docs current.
-
-There is no installation, no dependencies, no package, and no runtime — DOX is simply a Markdown instruction for AI agents. It works with any agent that supports AGENTS.md files, including Codex, Claude Code, and OpenCode.
-
-#### Installation
-
-1. Copy the contents of the project's [AGENTS.md](https://github.com/agent0ai/dox/blob/main/AGENTS.md) into your project's root `AGENTS.md` file.
-
-That's it. The agent will see the instructions and start building the DOX tree.
-
-#### Typical usage
-
-For a new project, copy the file and the agent will start maintaining the hierarchy automatically.
-
-For an existing project, tell your agent:
-
-```
-Initialize DOX tree for this project now.
-```
-
-The agent will create all child AGENTS.md files and indexes, covering the full project structure.
-
----
-
 ### 2.10 Ponytail — Minimalist Coding Plugin
 
 **Type:** Plugin / skill suite  
