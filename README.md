@@ -142,37 +142,67 @@ Describe the interface you want to build using prompts such as:
 
 ---
 
-### 2.3 Playwright MCP — Browser Automation via Model Context Protocol
+### 2.3 agent-browser — Browser Automation CLI for AI Agents
 
-**Type:** MCP server  
-**Repository:** https://github.com/microsoft/playwright-mcp/tree/main
+**Type:** CLI tool + skill  
+**Repository:** https://github.com/vercel-labs/agent-browser  
+**Website:** https://agent-browser.dev
 
-An MCP server maintained by Microsoft that gives AI agents browser automation capabilities through Playwright, enabling page navigation, interaction, inspection, and end-to-end workflow validation from MCP-compatible coding environments.
+A browser automation CLI built for AI agents by Vercel Labs. 100% native Rust: a CLI talks to a native daemon that drives Chrome directly over CDP — no Playwright or Puppeteer dependency. It returns compact accessibility-tree snapshots with ref-based element targeting (`@e1`, `@e2`), keeping LLM context usage low (~200–400 tokens vs thousands for a full DOM dump) while giving deterministic element selection. 50+ commands cover navigation, forms, screenshots, network, storage, tabs, frames, sessions, and debugging.
 
 #### Installation
 
-Install or register the MCP server according to your environment's MCP configuration format. The server can be run directly with `npx`:
-
+**Global install (recommended):**
 ```bash
-npx @playwright/mcp@latest
+npm install -g agent-browser
+agent-browser install   # Download Chrome from Chrome for Testing (first time only)
 ```
 
-Example MCP server configuration:
+**Homebrew (macOS):**
+```bash
+brew install agent-browser
+agent-browser install
+```
 
-```json
-{
-  "mcpServers": {
-    "playwright": {
-      "command": "npx",
-      "args": ["@playwright/mcp@latest"]
-    }
-  }
-}
+**Quick start (no install):**
+```bash
+npx agent-browser open example.com
+```
+
+**Skill for AI coding assistants:**
+```bash
+npx skills add vercel-labs/agent-browser
+```
+
+This works with Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, OpenCode, Windsurf, and others. Do not copy `SKILL.md` from `node_modules` — always install from the repository so it stays up to date.
+
+#### AI agent setup
+
+Add to your project or global instructions file (`AGENTS.md` / `CLAUDE.md`):
+
+```markdown
+## Browser Automation
+
+Use `agent-browser` for web automation. Run `agent-browser --help` for all commands.
+
+Core workflow:
+1. `agent-browser open <url>` - Navigate to page
+2. `agent-browser snapshot -i` - Get interactive elements with refs (@e1, @e2)
 ```
 
 #### Typical usage
 
-Use it when your workflow requires browser-based actions such as:
+```bash
+agent-browser open example.com      # Navigate to a page
+agent-browser snapshot -i           # Interactive elements with refs
+# - heading "Example Domain" [ref=e1]
+# - link "More information..." [ref=e2]
+agent-browser click @e2             # Click by ref
+agent-browser fill @e3 "text"       # Fill a form field
+agent-browser screenshot page.png   # Capture a screenshot
+```
+
+Or trigger it from your agent with prompts such as:
 
 ```
 "Open the app and verify the signup flow"
@@ -440,6 +470,60 @@ Use it when you want the agent to avoid over-engineering:
 
 ---
 
+### 2.11 code-review-graph — Local Code Intelligence Graph for Token-Efficient Reviews
+
+**Type:** MCP server / CLI  
+**Repository:** https://github.com/tirth8205/code-review-graph  
+**Website:** https://code-review-graph.com
+
+AI coding tools often re-read large parts of the codebase on every task. `code-review-graph` fixes that: it builds a persistent structural map of your code with Tree-sitter (functions, classes, imports as nodes; calls, inheritance, test coverage as edges), keeps it updated incrementally, and serves compact context over MCP so the assistant reads only the files a change actually touches. Local-first (SQLite graph), with blast-radius analysis, risk-scored reviews, benchmarks showing ~8x average token reduction on reviews, and optional semantic search via vector embeddings.
+
+#### Installation
+
+Requires Python 3.10+ (installing [uv](https://docs.astral.sh/uv/) is recommended):
+
+```bash
+pip install code-review-graph          # or: pipx install code-review-graph
+code-review-graph install              # detect installed AI coding tools and configure each one
+code-review-graph build                # parse the codebase
+```
+
+`install` detects which AI coding tools you have (Claude Code, Codex, Cursor, Windsurf, Zed, Continue, OpenCode, Gemini CLI, GitHub Copilot, and others), writes an MCP server entry for each, installs hooks and skills where supported, and adds graph instructions to the platform's rules file. Restart your tool after installing.
+
+The initial build takes ~10 seconds for a 500-file project. After that, the graph updates automatically on every file edit and git commit (editor hooks, git pre-commit hook, or watch mode).
+
+The same analysis also runs as a composite GitHub Action for risk-scored PR reviews in CI:
+
+```yaml
+- uses: tirth8205/code-review-graph@v2
+  with:
+    github-token: ${{ secrets.GITHUB_TOKEN }}
+```
+
+#### Typical usage
+
+Open your project and ask your AI assistant:
+
+```
+"Build the code review graph for this project"
+"Review this change and show the blast radius"
+"What files do I need to read to safely refactor this function?"
+```
+
+Key CLI commands:
+
+| Command | Description |
+|---------|-------------|
+| `code-review-graph build` | Parse the codebase into the graph |
+| `code-review-graph update` | Incremental update after changes |
+| `code-review-graph query` | Query the graph directly |
+| `code-review-graph watch` | Watch mode — keep the graph updated |
+| `code-review-graph visualize` | Interactive D3.js force-directed graph |
+| `code-review-graph eval` | Run evaluation benchmarks |
+| `code-review-graph serve` | Start the MCP server |
+
+---
+
 ## 4. Per-project setup checklist
 
 ```
@@ -455,13 +539,14 @@ Use it when you want the agent to avoid over-engineering:
 [ ] Install Coder primary agent for OpenCode
 [ ] Install Superpowers (spec-driven development + TDD)
 [ ] Install @nextlevelbuilder/ui-ux-pro-max-skill (if the project has a UI)
-[ ] Install Playwright MCP (if the project needs browser automation through MCP)
+[ ] Install agent-browser (if the project needs browser automation)
 [ ] Install Supabase Postgres Best Practices (if the project uses Supabase or Postgres)
 [ ] Install Security Guidance
 [ ] Install OpenCode-Mem (cross-session memory)
 [ ] Install Context7 (up-to-date library/API documentation for LLMs)
 [ ] Install DOX (self-documenting AGENTS.md framework for precise project context)
 [ ] Install Ponytail (minimal changes and over-engineering review)
+[ ] Install code-review-graph (token-efficient code review via local code intelligence graph)
 ```
 
 ---
@@ -478,7 +563,8 @@ Use it when you want the agent to avoid over-engineering:
 | Context7 | https://github.com/upstash/context7 |
 | DOX | https://github.com/agent0ai/dox |
 | Ponytail | https://github.com/DietrichGebert/ponytail |
-| Playwright MCP | https://github.com/microsoft/playwright-mcp/tree/main |
+| agent-browser | https://github.com/vercel-labs/agent-browser |
+| code-review-graph | https://github.com/tirth8205/code-review-graph |
 | GitHub CLI | https://cli.github.com/ |
 | Bun | https://bun.sh/ |
 
