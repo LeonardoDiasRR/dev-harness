@@ -524,6 +524,50 @@ Key CLI commands:
 
 ---
 
+### 2.12 ub-mode — Disciplined Engineering Principles for Code Changes
+
+**Type:** Skill  
+**Repository:** https://github.com/unclebob/ub-mode
+
+A skill that enforces a fixed sequence on every code change: **First Make it Work**, then **Make it Right**, then **Follow Practice**. It reduces Uncle Bob's `poteto-mode` rules to a checklist an agent can apply, and pairs them with deterministic quality gates.
+
+The working phase covers the laziness protocol (one decision in one place, smallest edit that solves the problem), foundational thinking, TDD, redesign from first principles, attacking the premise when two fixes fail the same gate, subtracting before adding, and building the lever.
+
+The correcting phase requires root-cause fixes, verifiable work units, behaviour-level tests, and three gate tools: **Crapper** (CRAP score per function below 10), **Dryer** (duplication below 0.8 similarity) and **Mutator** (kill surviving mutants, delete dead code).
+
+The practice phase covers keeping a log, guarding the context window, worktree cleanup, and small ordered commits.
+
+#### Installation
+
+Copy `SKILL.md` into your agent's skills directory as `ub-mode/SKILL.md`, then invoke `/ub-mode`:
+
+```bash
+mkdir -p ~/.hermes/skills/ub-mode
+curl -fsSL https://raw.githubusercontent.com/unclebob/ub-mode/master/SKILL.md \
+  -o ~/.hermes/skills/ub-mode/SKILL.md
+```
+
+Equivalent paths for other tools: `~/.claude/skills/ub-mode/SKILL.md`, `~/.cursor/skills/ub-mode/SKILL.md`, `~/.grok/skills/ub-mode/SKILL.md`.
+
+#### Companion tools
+
+| Tool | Gate it enforces |
+|------|------------------|
+| [crapper](https://github.com/unclebob/crapper) | Cyclomatic complexity, coverage and CRAP score per function (`CRAP < 10`) |
+| [dryer](https://github.com/unclebob/dryer) | Structural duplication (fails at `>= 0.8` similarity) |
+| [mutator](https://github.com/unclebob/mutator) | Mutation testing: uncovered code and surviving mutants |
+| [uml-viewer](https://github.com/unclebob/uml-viewer) | Components, coverage, CRAP, mutation score and dependency direction |
+
+#### Typical usage
+
+```
+/ub-mode
+```
+
+Then make the request as usual. The skill applies the three phases to the change and stops at the gate that fails.
+
+---
+
 ## 4. Per-project setup checklist
 
 ```
